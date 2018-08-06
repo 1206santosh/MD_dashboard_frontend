@@ -433,7 +433,7 @@ class ToDo extends Component {
   }
 
   get_tasks=()=>{
-    axios.get('http://localhost:3000/tasks',{headers:{"Authorization":"Token token="+this.state.current_user.auth_token}}).then((response)=>{
+    axios.get('https://md-dashboard-backend.herokuapp.com//tasks',{headers:{"Authorization":"Token token="+this.state.current_user.auth_token}}).then((response)=>{
       console.log(response)
       this.setState({
         allToDos:response.data,

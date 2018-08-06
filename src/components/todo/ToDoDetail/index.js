@@ -29,7 +29,7 @@ class ToDoDetail extends React.Component {
       current_user:current_user
     };
 
-    axios.get("http://localhost:3000/tasks/"+props.todo.id,{headers:{"Authorization":"Token token="+this.state.current_user.auth_token}}).then((response)=>{
+    axios.get("https://md-dashboard-backend.herokuapp.com/tasks/"+props.todo.id,{headers:{"Authorization":"Token token="+this.state.current_user.auth_token}}).then((response)=>{
       console.log(response)
      this.setState({
        comments_by_user:response.data.comments_by_user
@@ -108,7 +108,7 @@ class ToDoDetail extends React.Component {
       data['comment']['item_id']=this.state.todo.id,
       data['comment']['item_type']="Task",
       //
-      axios.post("http://localhost:3000//comments",data,{headers:{"Authorization":"Token token="+this.state.current_user.auth_token}}).then((response)=>{
+      axios.post("https://md-dashboard-backend.herokuapp.com//comments",data,{headers:{"Authorization":"Token token="+this.state.current_user.auth_token}}).then((response)=>{
         console.log(response)
       })
     }

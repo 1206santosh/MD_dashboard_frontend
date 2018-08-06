@@ -26,7 +26,7 @@ class MeetingsList extends React.Component{
 
   get_meetings=()=>{
     console.log(this.state.current_user.auth_token)
-    axios.get('http://localhost:3000/meetings',{headers:{"Authorization":"Token token="+this.state.current_user.auth_token}}).then((response)=>{
+    axios.get('https://md-dashboard-backend.herokuapp.com/meetings',{headers:{"Authorization":"Token token="+this.state.current_user.auth_token}}).then((response)=>{
       console.log(response)
         this.setState({
           data:response.data,
@@ -37,18 +37,18 @@ class MeetingsList extends React.Component{
   handleExpansion=(expanded,record)=> {
     if (expanded) {
       // console.log(record)
-      // axios.get('http://localhost:3000/tasks').then(function (response) {
+      // axios.get('https://md-dashboard-backend.herokuapp.com/tasks').then(function (response) {
       //   console.log(response)
       // })
       // let expand_data = []
-      // axios.get('http://localhost:3000/tasks').then((response)=>{
+      // axios.get('https://md-dashboard-backend.herokuapp.com/tasks').then((response)=>{
       //   console.log(response)
       //   this.setState({
       //     tasks:response.data
       //   })
       // })
       let expand_data=[]
-      axios.get('http://localhost:3000/tasks?meeting_id='+record.id,{headers:{"Authorization":"Token token="+this.state.current_user.auth_token}}).then((response)=>{
+      axios.get('https://md-dashboard-backend.herokuapp.com/tasks?meeting_id='+record.id,{headers:{"Authorization":"Token token="+this.state.current_user.auth_token}}).then((response)=>{
         console.log(response)
         this.setState({
           tasks:response.data

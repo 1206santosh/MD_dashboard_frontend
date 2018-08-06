@@ -51,7 +51,7 @@ class MeetingsForm extends React.Component{
   }
 
   get_users=()=>{
-    axios.get('http://localhost:3000/users_list',{headers:{"Authorization":"Token token="+this.state.current_user.auth_token}}).then((response)=>{
+    axios.get('https://md-dashboard-backend.herokuapp.com/users_list',{headers:{"Authorization":"Token token="+this.state.current_user.auth_token}}).then((response)=>{
       console.log(response)
       this.setState(
         {
@@ -72,7 +72,7 @@ class MeetingsForm extends React.Component{
     formData.meeting={description:description,scheduled_time:scheduled_time}
     formData.attendess=attendess
     console.log(formData)
-    axios.post('http://localhost:3000/meetings',formData,{headers:{"Authorization":"Token token="+this.state.current_user.auth_token}}).then(function (response) {
+    axios.post('https://md-dashboard-backend.herokuapp.com/meetings',formData,{headers:{"Authorization":"Token token="+this.state.current_user.auth_token}}).then(function (response) {
       console.log(response)
       window.location.reload()
 

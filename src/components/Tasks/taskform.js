@@ -32,7 +32,7 @@ class TaskForm extends React.Component{
   }
 
   get_users=()=>{
-    axios.get('http://localhost:3000/users_list',{headers:{"Authorization":"Token token="+this.state.current_user.auth_token}}).then((response)=>{
+    axios.get('https://md-dashboard-backend.herokuapp.com/users_list',{headers:{"Authorization":"Token token="+this.state.current_user.auth_token}}).then((response)=>{
       console.log(response.data)
       this.setState(
         {
@@ -71,7 +71,7 @@ class TaskForm extends React.Component{
      const formdata={task:{},file_ids:file_ids}
      const assignee=this.state.assignee
      formdata.task={description:description,due_date:due_date,meeting_id:meeting_id,assignee_id:assignee}
-     axios.post("http://localhost:3000/tasks",formdata,{headers:{"Authorization":"Token token="+this.state.current_user.auth_token}}).then((response)=>{
+     axios.post("https://md-dashboard-backend.herokuapp.com/tasks",formdata,{headers:{"Authorization":"Token token="+this.state.current_user.auth_token}}).then((response)=>{
        console.log(response)
        window.location.reload()
      })
@@ -136,7 +136,7 @@ class TaskForm extends React.Component{
           </FormItem>
           <input type="hidden" value={this.props.meeting_id} id="meeting_id" />
           <Dragger name="upload[file]"
-                   action="http://localhost:3000/uploads"
+                   action="https://md-dashboard-backend.herokuapp.com/uploads"
                    multiple={true}
                    onChange={this.handleUpload}
                    headers={{"Authorization":"Token token="+this.state.current_user.auth_token}}

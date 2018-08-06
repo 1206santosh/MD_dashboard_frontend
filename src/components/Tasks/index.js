@@ -14,7 +14,7 @@ class Inbox extends React.Component{
   }
 
   get_tasks=()=>{
-    axios.get('http://localhost:3000/tasks').then((response)=>{
+    axios.get('https://md-dashboard-backend.herokuapp.com/tasks').then((response)=>{
       console.log(response)
       this.setState({
         tasks:response.data
