@@ -105,6 +105,10 @@ class TaskForm extends React.Component{
 
 
   render(){
+    const formItemLayout = {
+      labelCol: { span: 6 },
+      wrapperCol: { span: 18 },
+    };
     const data=this.state.users
     const user_options=()=>{
       return data.map(option=>
@@ -120,17 +124,23 @@ class TaskForm extends React.Component{
           visible={this.state.visible}
           onOk={this.handleOk}
           onCancel={this.handleCancel}
+          footer={[
+            <Button key="back" onClick={this.handleCancel}>Cancel</Button>,
+            <Button key="submit" type="primary" loading={this.state.loading} htmlType="submit" onClick={this.handleSubmit}>
+              Submit
+            </Button>,
+          ]}
         >
         <Form onSubmit={this.handleSubmit} className="login-form">
-          <FormItem label="Task Description">
+          <FormItem label="Task Description"  {...formItemLayout}>
             <TextArea ref="description" name="description" id="description"/>
           </FormItem>
 
-          <FormItem label="Due Date">
+          <FormItem label="Due Date"  {...formItemLayout}>
             <DatePicker renderExtraFooter={() => 'extra footer'}  onChange={this.get_date} />
           </FormItem>
-          <FormItem label="Assignee">
-            <Select  placeholder="Please select favourite colors" id="attendess" refs="attendess" onChange={this.get_assignee}>
+          <FormItem label="Assignee"  {...formItemLayout}>
+            <Select  id="attendess" refs="attendess" onChange={this.get_assignee}>
               {user_options()}
             </Select>
           </FormItem>
@@ -147,7 +157,7 @@ class TaskForm extends React.Component{
             <p className="ant-upload-text">Click or drag file to this area to upload</p>
             <p className="ant-upload-hint">Support for a single or bulk upload. Strictly prohibit from uploading company data or other band files</p>
           </Dragger>,
-          <Button type="primary" htmlType="submit">Submit</Button>
+          {/*<Button type="primary" htmlType="submit">Submit</Button>*/}
         </Form>
         </Modal>
 

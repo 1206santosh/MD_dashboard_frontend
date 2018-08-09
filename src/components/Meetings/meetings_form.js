@@ -14,7 +14,7 @@ class MeetingsForm extends React.Component{
   constructor(props){
     super(props)
     const current_user=JSON.parse(sessionStorage.current_user)
-    this.state = { visible: false ,date:"",users:[],current_user:current_user}
+    this.state = { visible: false ,date:"",users:[],current_user:current_user,loading: false}
     this.handleSubmit=this.handleSubmit.bind(this)
     this.get_date=this.get_date.bind(this)
     this.get_users=this.get_users.bind(this)
@@ -108,34 +108,59 @@ class MeetingsForm extends React.Component{
           <Option key={option.id} value={option.id}>{option.name}</Option>
         )
       }
+
+      const formItemLayout = {
+        labelCol: { span: 6 },
+        wrapperCol: { span: 18 },
+      };
     return(
       <div>
         <Button type="primary" onClick={this.showModal}>Create Meeting</Button>
         <Modal
-          title="Basic Modal"
+          title="Create Meeting"
           visible={this.state.visible}
           onOk={this.handleOk}
           onCancel={this.handleCancel}
+          footer={[
+            <Button key="back" onClick={this.handleCancel}>Cancel</Button>,
+            <Button key="submit" type="primary" loading={this.state.loading} htmlType="submit" onClick={this.handleSubmit}>
+              Submit
+            </Button>,
+          ]}
         >
           <Form layout="horizontal" onSubmit={this.handleSubmit}>
-            <FormItem label="Description">
-              <TextArea ref="description" name="description" id="description"/>
+
+
+
+            <FormItem
+              {...formItemLayout}
+              label="Task"
+            >
+              <TextArea ref="description" name="description" id="description" styles={{width:'100%'}}   />
             </FormItem>
 
-            <FormItem label="Scheduled Time">
+
+            <FormItem
+              {...formItemLayout}
+              label="Due Date"
+            >
+
               <DatePicker showTime format="YYYY-MM-DD HH:mm:ss"  ref="scheduled_time" name="scheduled_time" id="scheduled_time" onChange={this.get_date}/>
             </FormItem>
 
-            <FormItem label="Attendes">
-              <Select mode="multiple" placeholder="Please select favourite colors" id="attendess" refs="attendess" onChange={this.get_attendees}>
+
+            <FormItem
+              {...formItemLayout}
+              label="Attendees"
+            >
+
+              <Select mode="multiple"  id="attendess" refs="attendess" onChange={this.get_attendees} >
                 {user_options()}
               </Select>
             </FormItem>
-            <Button type="primary" htmlType="submit">Submit</Button>
+
+            {/*<Button type="primary" htmlType="submit">Submit</Button>*/}
           </Form>
-
-
-
         </Modal>
       </div>
     )

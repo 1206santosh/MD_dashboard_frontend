@@ -43,8 +43,9 @@ const ToDoItem = (({todo, onTodoSelect, onTodoChecked, onMarkAsStart}) => {
           <div className="gx-manage-margin">
             {/*{labels.map((label, index) => {*/}
               {/*return (todo.labels).includes(label.id) &&*/}
-                <Badge  count={todo.state} style={{backgroundColor: "indigo"}}/>
+                <Badge  count={todo.status} style={{backgroundColor: "indigo"}}/>
                 <Badge  count={todo.due_date} style={{backgroundColor: "green"}}/>
+                <Badge  count={todo.assignee} style={{backgroundColor: "info"}}/>
             {/*})}*/}
           </div>
         </div>

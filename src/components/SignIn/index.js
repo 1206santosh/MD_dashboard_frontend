@@ -43,7 +43,7 @@ class SignIn extends React.Component{
                 <p><IntlMessages id="app.userAuth.getAccount"/></p>
               </div>
               <div className="gx-app-logo">
-                <img alt="example" src={require("assets/images/logo-white.png")}/>
+                {/*<img alt="example" src={require("assets/images/logo-white.png")}/>*/}
               </div>
             </div>
             <div className="gx-app-login-content">

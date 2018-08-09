@@ -166,11 +166,13 @@ class ToDoDetail extends React.Component {
                   <div className="gx-user-name gx-mr-md-4 gx-mr-2 gx-my-1"
                        onClick={this.handleUserClick}>
 
-                    {user === null ? <h4 className="gx-mb-0 gx-pointer">Assign User </h4> :
+                    {/*{todo.assignee === null ? */}
                       <div className="gx-flex-row gx-align-items-center gx-pointer">
-                        <Avatar className="gx-mr-2"  alt={this.state.current_user.name}/>
-                        <h4 className="gx-mb-0">{this.state.current_user.name}</h4>
-                      </div>}
+                        {/*<h4 className="gx-mb-0 gx-pointer">Assign User </h4> */}
+                        <Avatar className="gx-mr-2"  alt={todo.assignee}/>
+                        <h4 className="gx-mb-0">{todo.assignee}</h4>
+                      </div>
+                    {/*}*/}
                   </div>
                   {/*<DatePicker className="gx-module-date gx-my-1"*/}
                               {/*defaultValue={todo.due_date !== null && Moment(todo.due_date, 'dddd, MMMM DD, YYYY h:mm a')}*/}
@@ -234,7 +236,7 @@ class ToDoDetail extends React.Component {
                 todo.completed = !todo.completed;
                 onToDoUpdate(todo);
               }}>
-                {(todo.status!="pending")?
+                {(todo.status=="completed")?
                   <span
                     className="gx-border-2 gx-size-30 gx-rounded-circle gx-text-green gx-border-green gx-d-block gx-text-center gx-pointer">
                                         <i className="icon icon-check"/></span>

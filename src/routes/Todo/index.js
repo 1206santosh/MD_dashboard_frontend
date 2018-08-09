@@ -387,6 +387,9 @@ class ToDo extends Component {
   };
   showToDos = ({currentTodo, toDos, conversation, user}) => {
     console.log(toDos)
+    const task_id=window.location.href.split("/")
+    console.log(task_id)
+    console.log(currentTodo)
     return currentTodo === null ?
       <ToDoList toDos={toDos} onSortEnd={this.onSortEnd}
                 onMarkAsStart={this.onMarkAsStart.bind(this)}
@@ -600,17 +603,17 @@ class ToDo extends Component {
             <div className="gx-module-box-content">
               {this.state.currentTodo === null ?
                 <div className="gx-module-box-topbar gx-module-box-topbar-todo">
-                  <Checkbox className="gx-icon-btn" color="primary"
-                            indeterminate={selectedToDos > 0 && selectedToDos < toDos.length}
-                            checked={selectedToDos > 0}
-                            onChange={this.onAllTodoSelect.bind(this)}
-                            value="SelectMail"/>
-                  <Dropdown overlay={this.optionMenu()} placement="bottomRight" trigger={['click']}>
-                    <div>
-                      <span className="gx-px-2"> {this.state.optionName}</span>
-                      <i className="icon icon-charvlet-down"/>
-                    </div>
-                  </Dropdown>
+                  {/*<Checkbox className="gx-icon-btn" color="primary"*/}
+                            {/*indeterminate={selectedToDos > 0 && selectedToDos < toDos.length}*/}
+                            {/*checked={selectedToDos > 0}*/}
+                            {/*onChange={this.onAllTodoSelect.bind(this)}*/}
+                            {/*value="SelectMail"/>*/}
+                  {/*<Dropdown overlay={this.optionMenu()} placement="bottomRight" trigger={['click']}>*/}
+                    {/*<div>*/}
+                      {/*<span className="gx-px-2"> {this.state.optionName}</span>*/}
+                      {/*<i className="icon icon-charvlet-down"/>*/}
+                    {/*</div>*/}
+                  {/*</Dropdown>*/}
 
                   {( selectedToDos > 0) &&
 

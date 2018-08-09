@@ -9,6 +9,7 @@ const App = ({match}) => (
   <div className="gx-main-content-wrapper">
     <Switch>
       <Route path='/meetings' component={MeetingsList} />
+      <Route path='/inbox/:task_id' component={Inbox}/>
       <Route path='/inbox' component={Inbox}/>
       <Route path='/' component={Inbox}/>
 
