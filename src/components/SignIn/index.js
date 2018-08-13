@@ -36,11 +36,11 @@ class SignIn extends React.Component{
       <div className="gx-app-login-wrap">
         <div className="gx-app-login-container">
           <div className="gx-app-login-main-content">
-            <div className="gx-app-logo-content">
+            <div className="gx-app-logo-content" style={{backgroundImage:"none"}}>
               <div className="gx-app-logo-wid">
                 <h1><IntlMessages id="app.userAuth.signIn"/></h1>
-                <p><IntlMessages id="app.userAuth.bySigning"/></p>
-                <p><IntlMessages id="app.userAuth.getAccount"/></p>
+                {/*<p><IntlMessages id="app.userAuth.bySigning"/></p>*/}
+                {/*<p><IntlMessages id="app.userAuth.getAccount"/></p>*/}
               </div>
               <div className="gx-app-logo">
                 {/*<img alt="example" src={require("assets/images/logo-white.png")}/>*/}

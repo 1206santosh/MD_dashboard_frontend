@@ -12,26 +12,26 @@ const ToDoItem = (({todo, onTodoSelect, onTodoChecked, onMarkAsStart}) => {
   return (
     <div className="gx-module-list-item">
       <div className="gx-module-list-icon">
-        <Checkbox color="primary"
-                  checked={todo.selected}
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    onTodoChecked(todo);
-                  }}
-                  value="SelectTodo"
-                  className="gx-icon-btn"
-        />
+        {/*<Checkbox color="primary"*/}
+                  {/*checked={todo.selected}*/}
+                  {/*onClick={(event) => {*/}
+                    {/*event.stopPropagation();*/}
+                    {/*onTodoChecked(todo);*/}
+                  {/*}}*/}
+                  {/*value="SelectTodo"*/}
+                  {/*className="gx-icon-btn"*/}
+        {/*/>*/}
 
-        <div onClick={() => {
-          todo.starred = !todo.starred;
-          onMarkAsStart(todo);
-        }}>
-          {todo.starred ?
-            <i className="gx-icon-btn icon icon-star"/> :
-            <i className="gx-icon-btn icon icon-star-o"/>
-          }
+        {/*<div onClick={() => {*/}
+          {/*todo.starred = !todo.starred;*/}
+          {/*onMarkAsStart(todo);*/}
+        {/*}}>*/}
+          {/*{todo.starred ?*/}
+            {/*<i className="gx-icon-btn icon icon-star"/> :*/}
+            {/*<i className="gx-icon-btn icon icon-star-o"/>*/}
+          {/*}*/}
 
-        </div>
+        {/*</div>*/}
       </div>
       <div className="gx-module-list-info" onClick={() => {
         onTodoSelect(todo);

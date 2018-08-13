@@ -13,8 +13,18 @@ import AppModuleHeader from "components/AppModuleHeader/index";
 import IntlMessages from "util/IntlMessages";
 import axios from "axios/index";
 import TaskForm from "components/Tasks/taskform"
+import {connect} from 'react-redux'
+import TodoToShow from "appRedux/actions/Todo"
+import MeetingSearch from "components/Meetings/meetings_search"
+import UserRemoteSelect from "components/Meetings/searchtest"
 
 const ITEM_HEIGHT = 34;
+
+const mapDispatchToProps=dispatch=>({
+  dispatch:(todo)=>{
+    dispatch(TodoToShow(todo))
+  }
+})
 
 class ToDo extends Component {
 
@@ -36,53 +46,40 @@ class ToDo extends Component {
     })
   };
   onOptionMenuItemSelect = (e) => {
+    console.log(e.key)
     switch (e.key) {
       case 'All':
         this.handleRequestClose();
         this.getAllTodo();
         break;
-      case 'None':
+      case 'Today':
         this.handleRequestClose();
-        this.getUnselectedAllTodo();
-        break;
-      case 'Starred':
-        this.handleRequestClose();
-        this.getStarredToDo();
-        break;
-      case 'Unstarred':
-        this.handleRequestClose();
-        this.getUnStarredTodo();
-        break;
-      case 'Important':
-        this.handleRequestClose();
-        this.getImportantToDo();
-        break;
-      case 'Unimportant':
-        this.handleRequestClose();
-        this.getUnimportantToDo();
+        this.getTodayTodo();
         break;
     }
   };
   getAllTodo = () => {
+    console.log("all todo")
     let toDos = this.state.allToDos.map((todo) => todo ? {
       ...todo,
       selected: true
     } : todo);
     this.setState({
       selectedToDos: toDos.length,
-      allToDos: toDos,
       optionName: 'All',
       toDos: toDos
     });
   };
-  getUnselectedAllTodo = () => {
-    let toDos = this.state.allToDos.map((todo) => todo ? {
-      ...todo,
-      selected: false
-    } : todo);
+  getTodayTodo = () => {
+    let toDos = this.state.allToDos.filter((todo) => {
+      if(todo.scheduled){
+        return todo
+      }
+      }
+    );
+    console.log(toDos)
     this.setState({
       selectedToDos: 0,
-      allToDos: toDos,
       optionName: 'None',
       toDos: toDos
     });
@@ -324,6 +321,27 @@ class ToDo extends Component {
       </li>
     )
   };
+
+  filterByMeeting=(meeting_id)=>{
+    console.log(meeting_id)
+    this.setState({
+      loader: true
+    })
+    const todos=this.state.allToDos.filter(todo=>{
+      console.log(todo.meeting_id)
+      if(todo.meeting_id==meeting_id.key){
+        return todo
+      }
+    })
+
+    this.setState({
+      toDos:todos,
+      loader:false
+    })
+  };
+
+
+
   ToDoSideBar = () => {
     return <div className="gx-module-side">
       <div className="gx-module-side-header">
@@ -361,13 +379,14 @@ class ToDo extends Component {
               <IntlMessages id="todo.filters"/>
             </li>
 
-            {this.getNavFilters()}
+
 
             {/*<li className="gx-module-nav-label">*/}
               {/*<IntlMessages id="todo.labels"/>*/}
             {/*</li>*/}
 
             {/*{this.getNavLabels()}*/}
+            <MeetingSearch handleChange={this.filterByMeeting}/>
 
           </ul>
         </CustomScrollbars>
@@ -608,19 +627,20 @@ class ToDo extends Component {
                             {/*checked={selectedToDos > 0}*/}
                             {/*onChange={this.onAllTodoSelect.bind(this)}*/}
                             {/*value="SelectMail"/>*/}
-                  {/*<Dropdown overlay={this.optionMenu()} placement="bottomRight" trigger={['click']}>*/}
-                    {/*<div>*/}
-                      {/*<span className="gx-px-2"> {this.state.optionName}</span>*/}
-                      {/*<i className="icon icon-charvlet-down"/>*/}
-                    {/*</div>*/}
-                  {/*</Dropdown>*/}
-
-                  {( selectedToDos > 0) &&
-
-                  <Dropdown overlay={this.labelMenu()} placement="bottomRight" trigger={['click']}>
-                    <i className="gx-icon-btn icon icon-tag"/>
+                  <Dropdown overlay={this.optionMenu()} placement="bottomRight" trigger={['click']}>
+                    <div>
+                      <span className="gx-px-2"> {this.state.optionName}</span>
+                      <i className="icon icon-charvlet-down"/>
+                    </div>
                   </Dropdown>
-                  }
+
+                  {/*{*/}
+                    {/*( selectedToDos > 0) &&*/}
+
+                  {/*<Dropdown overlay={this.labelMenu()} placement="bottomRight" trigger={['click']}>*/}
+                    {/*<i className="gx-icon-btn icon icon-tag"/>*/}
+                  {/*</Dropdown>*/}
+                  {/*}*/}
                 </div>
                 :
                 <div className="gx-module-box-topbar">
@@ -644,4 +664,4 @@ class ToDo extends Component {
   }
 }
 
-export default ToDo;
+export default ToDo

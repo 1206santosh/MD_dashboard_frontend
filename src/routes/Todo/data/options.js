@@ -3,18 +3,6 @@ export default [
     'title': 'All',
   },
   {
-    'title': 'None',
+    'title': 'Today',
   },
-  {
-    'title': 'Starred',
-  },
-  {
-    'title': 'Unstarred',
-  },
-  {
-    'title': 'Important',
-  },
-  {
-    'title': 'Unimportant',
-  }
 ];
