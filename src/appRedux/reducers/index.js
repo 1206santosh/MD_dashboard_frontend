@@ -9,7 +9,7 @@ const reducers = combineReducers({
   routing: routerReducer,
   settings: Settings,
   auth: Auth,
-  todo: Todo
+  todo: Todo,
 });
 
 export default reducers;

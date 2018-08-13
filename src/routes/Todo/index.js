@@ -17,14 +17,19 @@ import {connect} from 'react-redux'
 import TodoToShow from "appRedux/actions/Todo"
 import MeetingSearch from "components/Meetings/meetings_search"
 import UserRemoteSelect from "components/Meetings/searchtest"
+import configureStore from "../../appRedux/store";
 
 const ITEM_HEIGHT = 34;
 
-const mapDispatchToProps=dispatch=>({
-  dispatch:(todo)=>{
-    dispatch(TodoToShow(todo))
-  }
-})
+export const store = configureStore();
+console.log(store.getState())
+
+const mapDispatchToProps=(dispatch)=>{
+  console.log(dispatch)
+  const {todo}=dispatch
+  console.log({todo})
+  return {todo}
+}
 
 class ToDo extends Component {
 
@@ -80,7 +85,7 @@ class ToDo extends Component {
     console.log(toDos)
     this.setState({
       selectedToDos: 0,
-      optionName: 'None',
+      optionName: 'Today',
       toDos: toDos
     });
   };
@@ -409,7 +414,7 @@ class ToDo extends Component {
     const task_id=window.location.href.split("/")
     console.log(task_id)
     console.log(currentTodo)
-    return currentTodo === null ?
+    return (currentTodo === null  || currentTodo===undefined) ?
       <ToDoList toDos={toDos} onSortEnd={this.onSortEnd}
                 onMarkAsStart={this.onMarkAsStart.bind(this)}
                 onTodoSelect={this.onTodoSelect.bind(this)}
@@ -424,7 +429,6 @@ class ToDo extends Component {
 
   constructor(props) {
     super(props);
-   console.log(props.todos)
     const current_user=JSON.parse(sessionStorage.current_user)
     this.state = {
       searchTodo: '',
@@ -435,7 +439,7 @@ class ToDo extends Component {
       optionName: 'None',
       anchorEl: null,
       allToDos: this.props.todos,
-      currentTodo: null,
+      currentTodo: JSON.parse(this.props.todo.currentTodo),
       user: {
         name: 'Robert Johnson',
         email: 'robert.johnson@example.com',
@@ -534,6 +538,7 @@ class ToDo extends Component {
       loader: true,
       conversation: conversationList
     });
+    window.localStorage.setItem("current_todo",JSON.stringify(todo))
     setTimeout(() => {
       this.setState({loader: false});
     }, 1500);
@@ -664,4 +669,4 @@ class ToDo extends Component {
   }
 }
 
-export default ToDo
+export default connect(mapDispatchToProps,{TodoToShow})(ToDo)

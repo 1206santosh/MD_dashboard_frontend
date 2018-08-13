@@ -26,3 +26,7 @@ export const SIGNOUT_USER = 'SIGNOUT_USER';
 export const SIGNOUT_USER_SUCCESS = 'SIGNOUT_USER_SUCCESS';
 export const INIT_URL = 'INIT_URL';
 
+//Todo const
+
+export const CURRENT_TODO="CURRENT_TODO"
+
