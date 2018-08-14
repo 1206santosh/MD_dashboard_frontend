@@ -18,16 +18,14 @@ import TodoToShow from "appRedux/actions/Todo"
 import MeetingSearch from "components/Meetings/meetings_search"
 import UserRemoteSelect from "components/Meetings/searchtest"
 import configureStore from "../../appRedux/store";
+import AllocateTask from "components/Tasks/AllocateTask"
 
 const ITEM_HEIGHT = 34;
 
 export const store = configureStore();
-console.log(store.getState())
 
 const mapDispatchToProps=(dispatch)=>{
-  console.log(dispatch)
   const {todo}=dispatch
-  console.log({todo})
   return {todo}
 }
 
@@ -51,7 +49,6 @@ class ToDo extends Component {
     })
   };
   onOptionMenuItemSelect = (e) => {
-    console.log(e.key)
     switch (e.key) {
       case 'All':
         this.handleRequestClose();
@@ -64,7 +61,6 @@ class ToDo extends Component {
     }
   };
   getAllTodo = () => {
-    console.log("all todo")
     let toDos = this.state.allToDos.map((todo) => todo ? {
       ...todo,
       selected: true
@@ -82,7 +78,6 @@ class ToDo extends Component {
       }
       }
     );
-    console.log(toDos)
     this.setState({
       selectedToDos: 0,
       optionName: 'Today',
@@ -274,7 +269,7 @@ class ToDo extends Component {
           if (filter.id === 0 && todo.starred) {
             return todo
           } else if (filter.id === 1 && todo.scheduled) {
-            console.log("scheduled")
+
             return todo
           } else if (filter.id === 2 && todo.completed) {
             return todo
@@ -328,12 +323,11 @@ class ToDo extends Component {
   };
 
   filterByMeeting=(meeting_id)=>{
-    console.log(meeting_id)
+
     this.setState({
       loader: true
     })
     const todos=this.state.allToDos.filter(todo=>{
-      console.log(todo.meeting_id)
       if(todo.meeting_id==meeting_id.key){
         return todo
       }
@@ -341,7 +335,10 @@ class ToDo extends Component {
 
     this.setState({
       toDos:todos,
-      loader:false
+      loader:false,
+      infilter:true,
+      meeting:meeting_id
+
     })
   };
 
@@ -403,17 +400,14 @@ class ToDo extends Component {
       this.setState({toDos: this.state.allToDos.filter((todo) => !todo.deleted)});
     } else {
       const searchToDos = this.state.allToDos.filter((todo) =>
-      !todo.deleted && todo.title.toLowerCase().indexOf(searchText.toLowerCase()) > -1);
+      todo.description.toLowerCase().indexOf(searchText.toLowerCase()) > -1);
       this.setState({
         toDos: searchToDos
       });
     }
   };
   showToDos = ({currentTodo, toDos, conversation, user}) => {
-    console.log(toDos)
     const task_id=window.location.href.split("/")
-    console.log(task_id)
-    console.log(currentTodo)
     return (currentTodo === null  || currentTodo===undefined) ?
       <ToDoList toDos={toDos} onSortEnd={this.onSortEnd}
                 onMarkAsStart={this.onMarkAsStart.bind(this)}
@@ -452,7 +446,8 @@ class ToDo extends Component {
       filter: -1,
       todoConversation,
       conversation: null,
-      current_user:current_user
+      current_user:current_user,
+      infilter:false,
     }
     this.get_tasks=this.get_tasks.bind(this)
     this.get_tasks()
@@ -460,7 +455,6 @@ class ToDo extends Component {
 
   get_tasks=()=>{
     axios.get('https://md-dashboard-backend.herokuapp.com//tasks',{headers:{"Authorization":"Token token="+this.state.current_user.auth_token}}).then((response)=>{
-      console.log(response)
       this.setState({
         allToDos:response.data,
         toDos:response.data
@@ -620,7 +614,7 @@ class ToDo extends Component {
                   <i className="icon icon-menu gx-icon-btn" aria-label="Menu"
                      onClick={this.onToggleDrawer.bind(this)}/>
               </span>
-              <AppModuleHeader placeholder="Search To Do" user={this.state.user}
+              <AppModuleHeader placeholder="Search Tasks" user={this.state.current_user}
                                onChange={this.updateSearch.bind(this)}
                                value={this.state.searchTodo}/>
             </div>
@@ -639,6 +633,10 @@ class ToDo extends Component {
                     </div>
                   </Dropdown>
 
+                  {(this.state.infilter) &&
+                    < TaskForm meeting_id={this.state.meeting.key}/>
+                  }
+
                   {/*{*/}
                     {/*( selectedToDos > 0) &&*/}
 
@@ -651,6 +649,7 @@ class ToDo extends Component {
                 <div className="gx-module-box-topbar">
                   <i className="icon icon-arrow-left gx-icon-btn" onClick={() => {
                     this.setState({currentTodo: null})
+                    window.localStorage.removeItem("current_todo")
                   }}/>
                 </div>
               }

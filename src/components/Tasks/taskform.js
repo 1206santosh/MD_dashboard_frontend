@@ -116,6 +116,8 @@ class TaskForm extends React.Component{
       )
     }
 
+    console.log(this.props)
+
     return(
       <div>
         <Button type="primary" onClick={this.showModal}>Create Tasks</Button>

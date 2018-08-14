@@ -7,6 +7,7 @@ import labels from "routes/Todo/data/labels";
 import users from "routes/Todo/data/users";
 import ConversationCell from "./ConversationCell";
 import axios from 'axios'
+import AllocateTask from "../../Tasks/AllocateTask";
 
 const {TextArea} = Input;
 
@@ -162,18 +163,28 @@ class ToDoDetail extends React.Component {
           <div className="gx-module-detail-item gx-module-detail-header">
             <Row>
               <Col xs={24} sm={12} md={17} lg={12} xl={17}>
-                <div className="gx-flex-row">
-                  <div className="gx-user-name gx-mr-md-4 gx-mr-2 gx-my-1"
-                       onClick={this.handleUserClick}>
+
+
 
                     {/*{todo.assignee === null ? */}
+                    {(todo.assignee_id===undefined||todo.assignee_id===null) ?
+                      <AllocateTask />
+                      :
+                      <div className="gx-flex-row">
+                      <div className="gx-user-name gx-mr-md-8 gx-mr-2 gx-my-1"
+                      onClick={this.handleUserClick}>
                       <div className="gx-flex-row gx-align-items-center gx-pointer">
                         {/*<h4 className="gx-mb-0 gx-pointer">Assign User </h4> */}
                         <Avatar className="gx-mr-2"  alt={todo.assignee}/>
                         <h4 className="gx-mb-0">{todo.assignee}</h4>
                       </div>
-                    {/*}*/}
-                  </div>
+                      </div>
+                        <AllocateTask />
+                      </div>
+
+
+                    }
+
                   {/*<DatePicker className="gx-module-date gx-my-1"*/}
                               {/*defaultValue={todo.due_date !== null && Moment(todo.due_date, 'dddd, MMMM DD, YYYY h:mm a')}*/}
                               {/*invalidLabel="Due Date"*/}
@@ -182,7 +193,7 @@ class ToDoDetail extends React.Component {
                               {/*animateYearScrolling={false}/>*/}
 
 
-                </div>
+
               </Col>
 
               {/*<Col xs={24} sm={12} md={7} lg={12} xl={7}>*/}
