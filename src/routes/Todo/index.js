@@ -219,20 +219,16 @@ class ToDo extends Component {
 
   onToDoUpdate = (data) => {
     this.handleRequestClose();
-    const toDos = this.state.allToDos.map(todo => {
-      if (todo.id === data.id) {
-        return data;
-      } else {
-        return todo;
-      }
-    });
-    this.setState({
-      alertMessage: 'ToDo Updated Successfully',
-      showMessage: true,
-      currentTodo: data,
-      allToDos: toDos,
-      toDos: toDos,
-    });
+    axios.post('https://md-dashboard-backend.herokuapp.com/tasks/'+data.id+'/toggle_state',{},{headers:{"Authorization":"Token token="+this.state.current_user.auth_token}}).then((response)=>{
+      console.log(response)
+      data.status=response.data.current_state
+      this.setState({
+        alertMessage: 'Task  Marked  Successfully',
+        showMessage: true,
+        currentTodo: data,
+      });
+    })
+
   };
 
 

@@ -6,8 +6,8 @@ const ActivityItem = ({task}) => {
 
   return (
     <Aux>
-      <h4 className="gx-text-truncate">{task.title}</h4>
-      <span className="gx-fs-sm gx-text-grey">{task.time}</span>
+      <h4 className="gx-text-truncate">{task.description}</h4>
+      <span className="gx-fs-sm gx-text-grey">{task.scheduled_time}</span>
     </Aux>
   );
 };

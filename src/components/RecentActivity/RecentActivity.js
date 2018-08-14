@@ -3,26 +3,44 @@ import {Avatar, Timeline} from "antd";
 import Widget from "components/Widget";
 import {recentActivity} from "components/Tasks/data";
 import ActivityItem from "./ActivityItem";
-
+import axios from "axios"
 const TimeLineItem = Timeline.Item;
 
 class RecentActivity extends React.Component {
 
-// constructor(){
-//
-// }
+    constructor(props){
+      super(props)
+      const current_user=JSON.parse(sessionStorage.current_user)
+      this.state={
+        meetings:[],
+        current_user:current_user
+      }
+
+      this.get_meetings=this.get_meetings.bind(this)
+      this.get_meetings()
+
+    }
+
+    get_meetings=()=>{
+      axios.get('https://md-dashboard-backend.herokuapp.com/meetings?recent_activity=true',{headers:{"Authorization":"Token token="+this.state.current_user.auth_token}}).then((response)=>{
+        console.log(response)
+        this.setState({
+          meetings:response.data,
+        })
+      })
+    }
 
   render() {
     return (
       <Widget title="RECENT ACTIVITIES" styleName="gx-card-timeline gx-card-eq-height">
 
-        {recentActivity.map((activity, index) =>
+        {this.state.meetings.map((activity, index) =>
           <div className="gx-timeline-info" key={index}>
             <h4 className="gx-timeline-info-day">{activity.day}</h4>
             <Timeline>
-              {activity.tasks.map((task, index) => {
+              {activity.meetings.map((task, index) => {
                 return <TimeLineItem key={index} dot={
-                  <Avatar className="gx-size-24" src={task.avatar}/>}>
+                  <Avatar className="gx-size-24" src=""/>}>
                   <ActivityItem task={task}/>
                 </TimeLineItem>
               })}

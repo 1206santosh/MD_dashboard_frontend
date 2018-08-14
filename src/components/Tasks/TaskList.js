@@ -17,7 +17,7 @@ class TaskList extends React.Component {
   }
 
   get_tasks=()=>{
-    axios.get('https://md-dashboard-backend.herokuapp.com//tasks',{headers:{"Authorization":"Token token="+this.state.current_user.auth_token}}).then((response)=>{
+    axios.get('https://md-dashboard-backend.herokuapp.com/tasks',{headers:{"Authorization":"Token token="+this.state.current_user.auth_token}}).then((response)=>{
       const upcomming_task=[]
       const today_tasks=[]
       console.log(response.data)

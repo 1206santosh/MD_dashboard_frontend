@@ -8,6 +8,7 @@ import users from "routes/Todo/data/users";
 import ConversationCell from "./ConversationCell";
 import axios from 'axios'
 import AllocateTask from "../../Tasks/AllocateTask";
+import toDos from "../../../routes/Todo/data/todo";
 
 const {TextArea} = Input;
 
@@ -27,14 +28,18 @@ class ToDoDetail extends React.Component {
       editNote: false,
       message: '',
       comments_by_user:[],
-      current_user:current_user
+      current_user:current_user,
+      uploads:[]
+
     };
 
     axios.get("https://md-dashboard-backend.herokuapp.com/tasks/"+props.todo.id,{headers:{"Authorization":"Token token="+this.state.current_user.auth_token}}).then((response)=>{
       console.log(response)
      this.setState({
-       comments_by_user:response.data.comments_by_user
+       comments_by_user:response.data.comments_by_user,
+       uploads:response.data.upload
      })
+
     })
 
 
@@ -147,15 +152,21 @@ class ToDoDetail extends React.Component {
 
   };
 
+
+
   render() {
-    const {onToDoUpdate, onLabelUpdate, onDeleteToDo} = this.props;
-    const {todo, editNote, editTitle, description, notes, message} = this.state;
+    const {onToDoUpdate,onLabelUpdate, onDeleteToDo} = this.props;
+    const {todo, editNote, editTitle, description, notes, message, uploads} = this.state;
     console.log(this.state.comments_by_user.length)
     const comments=this.state.comments_by_user.length>0 ? this.state.comments_by_user.map((comment, index) => <ConversationCell key={index} comment={comment}/>):""
     // const comments=<div></div>
     let user = null;
-    if (todo.user > 0)
-      user = users.find((user) => user.id === todo.user);
+
+
+    const uploads_list=this.state.uploads.length >0 ? this.state.uploads.map((u)=> <li><a target={"_blank"} href={u.file_url}>{u.filename}</a></li>):""
+    // if (todo.user > 0)
+    //   user = users.find((user) => user.id === todo.user);
+    console.log(uploads_list)
 
     return (
       <div className="gx-module-detail gx-module-list">
@@ -244,7 +255,7 @@ class ToDoDetail extends React.Component {
 
             <div className="gx-form-group gx-flex-row gx-align-items-center gx-mb-0 gx-flex-nowrap">
               <div onClick={(event) => {
-                todo.completed = !todo.completed;
+                // todo.completed = !todo.completed;
                 onToDoUpdate(todo);
               }}>
                 {(todo.status=="completed")?
@@ -278,6 +289,10 @@ class ToDoDetail extends React.Component {
                   <div className="gx-task-title gx-col">
                     {description}
                   </div>
+
+
+
+
                   {/*<span className="gx-d-block gx-size-40 gx-text-center gx-pointer"*/}
                         {/*onClick={this.handleEditTitle}>*/}
                     {/*<i className="gx-icon-btn icon icon-edit"/>*/}
@@ -316,6 +331,9 @@ class ToDoDetail extends React.Component {
 
               </div>}
           </div>
+          <ul>
+            {uploads_list}
+          </ul>
           <div className="gx-module-detail-item">
             <h3>Comments</h3>
           </div>
