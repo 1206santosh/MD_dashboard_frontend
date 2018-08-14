@@ -4,6 +4,7 @@ import { Modal } from 'antd';
 import { DatePicker,Select } from 'antd';
 import axios from 'axios';
 import { Upload, message } from 'antd';
+import "components/Tasks/Taskform.css"
 
 const Dragger = Upload.Dragger;
 const { RangePicker, MonthPicker } = DatePicker;

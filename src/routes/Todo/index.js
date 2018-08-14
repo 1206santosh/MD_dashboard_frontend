@@ -619,6 +619,7 @@ class ToDo extends Component {
                                value={this.state.searchTodo}/>
             </div>
             <div className="gx-module-box-content">
+
               {this.state.currentTodo === null ?
                 <div className="gx-module-box-topbar gx-module-box-topbar-todo">
                   {/*<Checkbox className="gx-icon-btn" color="primary"*/}
@@ -633,9 +634,9 @@ class ToDo extends Component {
                     </div>
                   </Dropdown>
 
-                  {(this.state.infilter) &&
+                  <div class="width-90">{(this.state.infilter) &&
                     < TaskForm meeting_id={this.state.meeting.key}/>
-                  }
+                  }</div>
 
                   {/*{*/}
                     {/*( selectedToDos > 0) &&*/}
@@ -645,6 +646,7 @@ class ToDo extends Component {
                   {/*</Dropdown>*/}
                   {/*}*/}
                 </div>
+
                 :
                 <div className="gx-module-box-topbar">
                   <i className="icon icon-arrow-left gx-icon-btn" onClick={() => {
