@@ -18,25 +18,24 @@ const getTags = (tags) => {
 
 const TaskItem = ({data, onChange}) => {
 
-  const {title, tags, completed, user, dueDate} = data;
+  const {description, status, assignee, due_date} = data;
   return (
     <Aux>
       <div className="gx-media gx-task-list-item gx-flex-nowrap">
         <div className="gx-mr-3">
-          <Checkbox checked={completed} onChange={() => onChange(data)}/>
+          {/*<Checkbox checked={completed} onChange={() => onChange(data)}/>*/}
         </div>
         <div className="gx-media-body gx-task-item-content">
           <div className="gx-task-item-content-left">
-            <h4 className={`${completed ? 'gx-text-strikethrough' : 'gx-text-truncate gx-text-hover'}`}>{title}</h4>
-
-            <Avatar className="gx-mr-2 gx-size-24" src={user.avatar}/>
-            <span className=" gx-text-grey">{user.name}</span>
+            <h4 className={`${status=="completed" ? 'gx-text-strikethrough' : 'gx-text-truncate gx-text-hover'}`}>{description}</h4>
+            <Avatar className="gx-mr-2 gx-size-24" src={""}/>
+            <span className=" gx-text-grey">{assignee.name}</span>
           </div>
           <div className="gx-task-item-content-right">
             <ul className="gx-dot-list">
-              {getTags(tags)}
+              {/*{getTags(tags)}*/}
             </ul>
-            <span className="gx-fs-sm gx-text-grey">Due {dueDate}</span>
+            <span className="gx-fs-sm gx-text-grey">Due  {due_date}</span>
           </div>
         </div>
       </div>

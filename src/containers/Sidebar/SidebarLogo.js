@@ -35,7 +35,7 @@ class SidebarLogo extends Component {
           {/*{themeType === THEME_TYPE_LITE ? <img src={require("assets/images/logo.png")}/> :*/}
             {/*<img src={require("assets/images/Deepak-About-Deepak_Nitrite-Logo.png")} styles={{width:'10% !important'}}/>*/}
           {/*}*/}
-          MD DASHBOARD
+          <a href="/"> MD DASHBOARD</a>
         </div>
 
       </div>
