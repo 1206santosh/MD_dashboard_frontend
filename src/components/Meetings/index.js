@@ -1,11 +1,16 @@
 import React from "react";
 import { Divider } from 'antd';
-import { Table, Icon} from 'antd';
+import { Table} from 'antd';
 import axios from 'axios';
 import MeetingsForm from "./meetings_form";
 import TaskForm from "../Tasks/taskform";
+import {connect} from "react-redux";
 
 
+const mapStateToProps=state=>{
+  const current_user=state.auth.authUser
+  return {current_user}
+}
 
 
 
@@ -13,12 +18,12 @@ class MeetingsList extends React.Component{
 
   constructor(props){
     super(props)
-    const current_user=JSON.parse(sessionStorage.current_user)
+    const current_user=props.current_user
     this.state={data:[],tasks:[],current_user:current_user}
     this.get_meetings=this.get_meetings.bind(this)
     this.get_task_table=this.get_task_table.bind(this)
-    this.set_tasks=this.set_tasks.bind(this)
-    this.handleExpansion=this.handleExpansion.bind(this)
+    // this.set_tasks=this.set_tasks.bind(this)
+    // this.handleExpansion=this.handleExpansion.bind(this)
     this.get_meetings()
 
   }
@@ -27,7 +32,6 @@ class MeetingsList extends React.Component{
   get_meetings=()=>{
     console.log(this.state.current_user.auth_token)
     axios.get('https://md-dashboard-backend.herokuapp.com/meetings',{headers:{"Authorization":"Token token="+this.state.current_user.auth_token}}).then((response)=>{
-      console.log(response)
         this.setState({
           data:response.data,
         })
@@ -36,53 +40,43 @@ class MeetingsList extends React.Component{
 
   handleExpansion=(expanded,record)=> {
     if (expanded) {
-      // console.log(record)
-      // axios.get('https://md-dashboard-backend.herokuapp.com/tasks').then(function (response) {
-      //   console.log(response)
-      // })
-      // let expand_data = []
-      // axios.get('https://md-dashboard-backend.herokuapp.com/tasks').then((response)=>{
-      //   console.log(response)
-      //   this.setState({
-      //     tasks:response.data
-      //   })
-      // })
-      let expand_data=[]
+      console.log(record)
       axios.get('https://md-dashboard-backend.herokuapp.com/tasks?meeting_id='+record.id,{headers:{"Authorization":"Token token="+this.state.current_user.auth_token}}).then((response)=>{
         console.log(response)
-        this.setState({
-          tasks:response.data
-        })
+        let meeting_tasks={}
+        meeting_tasks["meeting"+record.id]=response.data
+        this.setState(meeting_tasks)
       })
 
       return true
     }
   }
 
-  set_tasks(response){
-    this.setState(
-      {
-        tasks:response.data
-      }
-    )
-  }
+  // set_tasks(response){
+  //   this.setState(
+  //     {
+  //       tasks:response.data
+  //     }
+  //   )
+  // }
 
   get_task_table=(record)=>{
-    console.log(record.id)
     const columns = [
-      { title: 'Description', dataIndex: 'description', key: 'description' },
+      { title: 'Description', dataIndex: 'description', key: 'task_description' },
       { title: 'Status', dataIndex: 'status', key: 'status' },
       { title: 'Due Date', dataIndex: 'due_date', key: 'due_date' },
     ];
+    console.log(record.id)
 
-    const task_form=<TaskForm meeting_id={record.id}/>
+    const task_form=<TaskForm meeting_id={record.id} current_user={this.state.current_user}/>
 
     return (
       <div>
       <Table
         columns={columns}
-        dataSource={this.state.tasks}
+        dataSource={this.state["meeting"+record.id]}
         pagination={false}
+        className="gx-table-responsive"
       />
         {task_form}
       </div>
@@ -94,11 +88,6 @@ class MeetingsList extends React.Component{
 
   render(){
     const expandedRowRender = this.get_task_table
-
-
-
-
-
     const columns = [
       {
         title:'ID',
@@ -148,13 +137,13 @@ class MeetingsList extends React.Component{
     return(
       <div>
         <h1>Meeting List</h1>
-        <MeetingsForm/>
+        <MeetingsForm current_user={this.state.current_user}/>
         <Divider></Divider>
-        <Table columns={columns} dataSource={this.state.data} pagination={false}  expandedRowRender={expandedRowRender}  onExpand={this.handleExpansion} />
+        <Table className="gx-table-responsive" columns={columns} dataSource={this.state.data} pagination={false}  expandedRowRender={expandedRowRender}  onExpand={this.handleExpansion} />
       </div>
     )
   }
 }
 
 
-export default MeetingsList
+export default connect(mapStateToProps)(MeetingsList)

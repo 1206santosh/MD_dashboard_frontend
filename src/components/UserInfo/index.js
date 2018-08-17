@@ -1,11 +1,23 @@
 import React, {Component} from "react";
 import {Avatar, Popover} from "antd";
+import {userSignOut} from 'appRedux/actions/Auth'
+import {connect} from "react-redux";
+import { bindActionCreators } from 'redux';
+
+
+const mapDispatchToProps=(dispatch)=>{
+  return {actions: bindActionCreators(userSignOut,dispatch)}
+}
 
 class UserInfo extends Component {
+  constructor(props){
+    super(props)
+    this.logOut=this.logOut.bind(this)
+    window.location.reload()
+  }
 
   logOut=(e)=>{
-    sessionStorage.removeItem('current_user')
-    window.location.reload()
+    this.props.dispatch(userSignOut())
   }
 
   render() {
@@ -27,4 +39,4 @@ class UserInfo extends Component {
   }
 }
 
-export default UserInfo;
+export default connect(mapDispatchToProps)(UserInfo);

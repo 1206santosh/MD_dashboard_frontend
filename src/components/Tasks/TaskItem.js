@@ -1,27 +1,27 @@
 import React from "react";
-import {Avatar, Checkbox, Tooltip} from "antd";
+import {Avatar, Tooltip} from "antd";
 
 import Aux from "util/Auxiliary";
-import {taskTags} from "./data";
+// import {taskTags} from "./data";
 
-const getTags = (tags) => {
-  return taskTags.map((tag, index) => {
-    if (tags.includes(tag.id)) {
-      return <Tooltip key={index} title={tag.name}>
-        <li className={`gx-text-${tag.color}`}>
-          <i className="icon icon-circle gx-fs-xxs"/>
-        </li>
-      </Tooltip>
-    }
-  })
-};
+// const getTags = (tags) => {
+//   return taskTags.map((tag, index) => {
+//     if (tags.includes(tag.id)) {
+//       return <Tooltip key={index} title={tag.name}>
+//         <li className={`gx-text-${tag.color}`}>
+//           <i className="icon icon-circle gx-fs-xxs"/>
+//         </li>
+//       </Tooltip>
+//     }
+//   })
+// };
 
-const TaskItem = ({data, onChange}) => {
+const TaskItem = ({data, onChange ,onClick}) => {
 
   const {description, status, assignee, due_date} = data;
   return (
     <Aux>
-      <div className="gx-media gx-task-list-item gx-flex-nowrap">
+      <div className="gx-media gx-task-list-item gx-flex-nowrap" onClick={()=>onClick(data)}>
         <div className="gx-mr-3">
           {/*<Checkbox checked={completed} onChange={() => onChange(data)}/>*/}
         </div>

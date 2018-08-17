@@ -1,14 +1,14 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
 import {Layout, Popover} from "antd";
-import CustomScrollbars from "util/CustomScrollbars";
+// import CustomScrollbars from "util/CustomScrollbars";
 
-import languageData from "./languageData";
+// import languageData from "./languageData";
 import {onVerticalNavStyleChange, switchLanguage, toggleCollapsedSideNav} from "../../appRedux/actions/Setting";
 import SearchBox from "components/SearchBox";
 import UserInfo from "components/UserInfo";
 import AppNotification from "components/AppNotification";
-import MailNotification from "components/MailNotification";
+// import MailNotification from "components/MailNotification";
 import {
   ABOVE_THE_HEADER,
   BELOW_THE_HEADER,
@@ -41,7 +41,7 @@ class Topbar extends Component {
 
 
   render() {
-    const {locale, navStyle, horizontalNavPosition, navCollapsed, width} = this.props;
+    const {navStyle, horizontalNavPosition, navCollapsed, width} = this.props;
     let {verticalNavStyle} = this.props;
     if (width < TAB_SIZE && verticalNavStyle === NAV_STYLE_FIXED) {
       verticalNavStyle = NAV_STYLE_DRAWER;

@@ -1,9 +1,9 @@
 import React from "react";
-
 import Aux from "util/Auxiliary";
 
-const ActivityItem = ({task}) => {
 
+
+const ActivityItem = ({task}) => {
   return (
     <Aux>
       <h4 className="gx-text-truncate">{task.description}</h4>

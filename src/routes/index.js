@@ -1,7 +1,7 @@
 import React from "react";
 import {Route, Switch} from "react-router-dom";
 
-import asyncComponent from "util/asyncComponent";
+// import asyncComponent from "util/asyncComponent";
 import MeetingsList from "components/Meetings/index";
 import Inbox from "components/Tasks/index"
 import Dashboard from "components/Dashboard/index"

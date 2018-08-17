@@ -1,18 +1,40 @@
 import React from "react";
 import {Tabs} from "antd";
 import Widget from "components/Widget";
-import {taskList} from "./data";
 import TaskItem from "./TaskItem";
 import axios from "axios/index";
+import {history} from "../../appRedux/store";
+import TodoToShow from "appRedux/actions/Todo"
+import configureStore from "../../appRedux/store";
+import {connect} from "react-redux";
+import { bindActionCreators } from 'redux';
 
 const TabPane = Tabs.TabPane;
+const store = configureStore()
+
+
+const mapDispatchToProps=(dispatch)=>{
+  return {actions: bindActionCreators(TodoToShow,dispatch)}
+}
+
+const mapStateToProps = ({auth}) => {
+  const current_user=auth.authUser
+  return {current_user}
+};
+
 
 class TaskList extends React.Component {
   constructor(props){
     super(props)
-    const current_user=JSON.parse(sessionStorage.current_user)
+    console.log(props)
+    const current_user=props.current_user
     this.state={today_tasks:[],current_user:current_user,upcomming_tasks:[]}
     this.get_tasks=this.get_tasks.bind(this)
+    this.redirectToTask=this.redirectToTask.bind(this)
+
+  }
+
+  componentWillMount(){
     this.get_tasks()
   }
 
@@ -20,18 +42,12 @@ class TaskList extends React.Component {
     axios.get('https://md-dashboard-backend.herokuapp.com/tasks',{headers:{"Authorization":"Token token="+this.state.current_user.auth_token}}).then((response)=>{
       const upcomming_task=[]
       const today_tasks=[]
-      console.log(response.data)
       response.data.filter(d=>{
-        // console.log(d)
         if(d.scheduled_tomorrow) {
           upcomming_task.push(d)
-          console.log(d)
-          console.log(upcomming_task)
         }
         if(d.scheduled){
           today_tasks.push(d)
-          console.log(d)
-          console.log(today_tasks)
         }
       })
 
@@ -53,20 +69,33 @@ class TaskList extends React.Component {
     }))
   };
 
+  redirectToTask=(task)=> {
+    history.push('/inbox')
+    // console.log(this.props.dispatch(task))
+    this.props.dispatch(TodoToShow(task))
+    console.log(store.getState())
+  }
 
-  render() {
+  render(){
+
     return (
       <Widget title="TASK LIST" styleName="gx-card-tabs gx-card-eq-height">
         <Tabs defaultActiveKey="1">
           <TabPane tab="Todays Tasks" key="1">
             {
               this.state.today_tasks.map((task, index) =>
-                <TaskItem key={index} data={task} onChange={this.onChange}/>)
+                <TaskItem key={index} data={task} onChange={this.onChange} onClick={this.redirectToTask}/>
+              )
             }
           </TabPane>
-          <TabPane tab="Upcomming Tasks" key="2">{
+          <TabPane tab="Upcoming Tasks" key="2">{
             this.state.upcomming_tasks.map((task, index) =>
-              <TaskItem key={index} data={task} onChange={this.onChange}/>)
+              <TaskItem key={index} data={task} onChange={this.onChange} onClick={()=>{
+                history.push('/inbox')
+                this.props.currentTodo(task)
+              }}/>
+
+                )
           }</TabPane>
         </Tabs>
       </Widget>
@@ -75,4 +104,4 @@ class TaskList extends React.Component {
 }
 
 
-export default TaskList;
+export default connect(mapStateToProps,mapDispatchToProps)(TaskList);

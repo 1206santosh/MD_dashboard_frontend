@@ -9,6 +9,8 @@ import ConversationCell from "./ConversationCell";
 import axios from 'axios'
 import AllocateTask from "../../Tasks/AllocateTask";
 import toDos from "../../../routes/Todo/data/todo";
+import { Popconfirm} from 'antd';
+
 
 const {TextArea} = Input;
 
@@ -16,7 +18,7 @@ class ToDoDetail extends React.Component {
   constructor(props) {
     super(props);
     const {description, notes} = props.todo;
-    const current_user=JSON.parse(sessionStorage.current_user)
+    const current_user=props.current_user
     this.state = {
       todo: props.todo,
       description,
@@ -32,20 +34,28 @@ class ToDoDetail extends React.Component {
       uploads:[]
 
     };
+    this.onConfirm=this.onConfirm.bind(this)
+    this.get_task_detail=this.get_task_detail.bind(this)
 
-    axios.get("https://md-dashboard-backend.herokuapp.com/tasks/"+props.todo.id,{headers:{"Authorization":"Token token="+this.state.current_user.auth_token}}).then((response)=>{
-      console.log(response)
-     this.setState({
-       comments_by_user:response.data.comments_by_user,
-       uploads:response.data.upload
-     })
-
-    })
 
 
 
     this.handleRequestClose = this.handleRequestClose.bind(this)
   }
+
+  componentDidMount(){
+    this.get_task_detail()
+  }
+
+  get_task_detail=()=>{
+    axios.get("https://md-dashboard-backend.herokuapp.com/tasks/"+this.props.todo.id,{headers:{"Authorization":"Token token="+this.state.current_user.auth_token}}).then((response)=>{
+      this.setState({
+        comments_by_user:response.data.comments_by_user,
+        uploads:response.data.upload
+      })
+
+    })
+}
 
   handleLabelClick = event => {
     this.setState({labelMenu: true, anchorEl: event.currentTarget});
@@ -115,7 +125,7 @@ class ToDoDetail extends React.Component {
       data['comment']['item_type']="Task",
       //
       axios.post("https://md-dashboard-backend.herokuapp.com//comments",data,{headers:{"Authorization":"Token token="+this.state.current_user.auth_token}}).then((response)=>{
-        console.log(response)
+
       })
     }
   }
@@ -151,22 +161,23 @@ class ToDoDetail extends React.Component {
     </Menu>)
 
   };
-
+  onConfirm=()=>{
+    this.props.onToDoUpdate()
+  }
 
 
   render() {
     const {onToDoUpdate,onLabelUpdate, onDeleteToDo} = this.props;
     const {todo, editNote, editTitle, description, notes, message, uploads} = this.state;
-    console.log(this.state.comments_by_user.length)
     const comments=this.state.comments_by_user.length>0 ? this.state.comments_by_user.map((comment, index) => <ConversationCell key={index} comment={comment}/>):""
     // const comments=<div></div>
     let user = null;
-
+    console.log(todo)
 
     const uploads_list=this.state.uploads.length >0 ? this.state.uploads.map((u)=> <li><a target={"_blank"} href={u.file_url}>{u.filename}</a></li>):""
     // if (todo.user > 0)
     //   user = users.find((user) => user.id === todo.user);
-    console.log(uploads_list)
+
 
     return (
       <div className="gx-module-detail gx-module-list">
@@ -175,11 +186,9 @@ class ToDoDetail extends React.Component {
             <Row>
               <Col xs={24} sm={12} md={17} lg={12} xl={17}>
 
-
-
-                    {/*{todo.assignee === null ? */}
+                {/*{todo.assignee === null ? */}
                     {(todo.assignee_id===undefined||todo.assignee_id===null) ?
-                      <AllocateTask />
+                      <Avatar className="gx-mr-2"  alt={todo.assignee}/>
                       :
                       <div className="gx-flex-row">
                       <div className="gx-user-name gx-mr-md-8 gx-mr-2 gx-my-1"
@@ -190,7 +199,6 @@ class ToDoDetail extends React.Component {
                         <h4 className="gx-mb-0">{todo.assignee}</h4>
                       </div>
                       </div>
-                        <AllocateTask />
                       </div>
 
 
@@ -254,11 +262,15 @@ class ToDoDetail extends React.Component {
             </div>
 
             <div className="gx-form-group gx-flex-row gx-align-items-center gx-mb-0 gx-flex-nowrap">
-              <div onClick={(event) => {
-                // todo.completed = !todo.completed;
-                onToDoUpdate(todo);
-              }}>
-                {(todo.status=="completed")?
+              <div style={{width:"20%"}}>
+              <Popconfirm placement="top" title={"Are You Sure?"} onConfirm={this.onConfirm} okText="Yes" cancelText="No">
+                {/*<Button>TR</Button>*/}
+
+              {/*<div onClick={(event) => {*/}
+                {/*// todo.completed = !todo.completed;*/}
+                {/*onToDoUpdate(todo);*/}
+              {/*}}>*/}
+                {(todo.status==="completed")?
                   <span
                     className="gx-border-2 gx-size-30 gx-rounded-circle gx-text-green gx-border-green gx-d-block gx-text-center gx-pointer">
                                         <i className="icon icon-check"/></span>
@@ -267,6 +279,7 @@ class ToDoDetail extends React.Component {
                                         <i className="icon icon-check"/>
                                     </span>
                 }
+              </Popconfirm>
               </div>
               {/*{editTitle ?*/}
                 {/*<div className="gx-flex-row gx-align-items-center gx-justify-content-between gx-flex-1 gx-flex-nowrap">*/}

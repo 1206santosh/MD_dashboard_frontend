@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import { Select, Spin } from 'antd';
-import debounce from 'lodash/debounce';
+// import debounce from 'lodash/debounce';
 import axios from "axios/index";
 const Option = Select.Option;
 
@@ -10,7 +10,7 @@ class MeetingSearch extends Component{
 
   constructor(props){
     super(props)
-    const current_user=JSON.parse(sessionStorage.current_user)
+    const current_user=this.props.current_user
     this.state = {
       data: [],
       value: [],
@@ -37,20 +37,19 @@ class MeetingSearch extends Component{
   //   console.log(value)
   // }
 
-  fetchMeeting=(value)=>{
-    this.setState({ data: [], fetching: true });
-    const data=this.state.allMeetings.map(meeting=> {
-      console.log(meeting.description.prop)
-      if (meeting.description.include(value.description)) {
-        return meeting
-      }
-    })
-
-    this.setState({
-      data:data
-    })
-
-  }
+  // fetchMeeting=(value)=>{
+  //   this.setState({ data: [], fetching: true });
+  //   const data=this.state.allMeetings.map(meeting=> {
+  //     if (meeting.description.include(value.description)) {
+  //       return meeting
+  //     }
+  //   })
+  //
+  //   this.setState({
+  //     data:data
+  //   })
+  //
+  // }
 
 
 
@@ -59,10 +58,11 @@ class MeetingSearch extends Component{
       <Select
         labelInValue
         placeholder="Select Meeting"
-        filterOption={false}
+        showSearch
+        optionFilterProp="children"
+        filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
         onChange={this.props.handleChange}
         notFoundContent={this.state.fetching ? <Spin size="small" /> : null}
-        onSearch={this.fetchMeeting}
         style={{ width: '100%' }}
       >
         {this.state.data.map(d => <Option key={d.id} >{d.description}</Option>)}

@@ -3,16 +3,16 @@ import {connect} from "react-redux";
 import {Menu} from "antd";
 import {Link} from "react-router-dom";
 import IntlMessages from "util/IntlMessages";
-import {NAV_STYLE_MINI, THEME_TYPE_LITE} from "constants/ThemeSetting";
+// import {NAV_STYLE_MINI, THEME_TYPE_LITE} from "constants/ThemeSetting";
 
 
-const SubMenu = Menu.SubMenu;
+// const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
 
 class HorizontalNav extends Component {
 
   render() {
-    const {themeType, pathname} = this.props;
+    const { pathname} = this.props;
     const selectedKeys = pathname.substr(1);
     const defaultOpenKeys = selectedKeys.split('/')[1];
     return (

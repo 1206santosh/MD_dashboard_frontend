@@ -1,8 +1,6 @@
 import React, {Component} from "react";
-import {Button, Checkbox, Drawer, Dropdown, Menu, message, Spin} from "antd";
-
+import {Drawer, Dropdown, Menu, message, Spin} from "antd";
 import CustomScrollbars from "util/CustomScrollbars";
-import toDos from "./data/todo";
 import filters from "./data/filters";
 import labels from "./data/labels";
 import options from "./data/options";
@@ -12,21 +10,30 @@ import ToDoDetail from "components/todo/ToDoDetail/index";
 import AppModuleHeader from "components/AppModuleHeader/index";
 import IntlMessages from "util/IntlMessages";
 import axios from "axios/index";
-import TaskForm from "components/Tasks/taskform"
-import {connect} from 'react-redux'
-import TodoToShow from "appRedux/actions/Todo"
+import TaskForm from "components/Tasks/taskform";
+import {connect} from 'react-redux';
+import TodoToShow from "appRedux/actions/Todo";
 import MeetingSearch from "components/Meetings/meetings_search"
-import UserRemoteSelect from "components/Meetings/searchtest"
 import configureStore from "../../appRedux/store";
-import AllocateTask from "components/Tasks/AllocateTask"
+import TaskTimeLine from "../../components/Tasks/TaskTimeLine";
+import {bindActionCreators} from "redux";
+
+
 
 const ITEM_HEIGHT = 34;
 
 export const store = configureStore();
 
 const mapDispatchToProps=(dispatch)=>{
-  const {todo}=dispatch
-  return {todo}
+  return {actions: bindActionCreators(TodoToShow,dispatch)}
+}
+
+
+const mapStateToProps=state=>{
+   console.log(state)
+   const currentTodo=state.task.currentTodo
+   const current_user=state.auth.authUser
+  return {currentTodo,current_user}
 }
 
 class ToDo extends Component {
@@ -219,13 +226,14 @@ class ToDo extends Component {
 
   onToDoUpdate = (data) => {
     this.handleRequestClose();
-    axios.post('https://md-dashboard-backend.herokuapp.com/tasks/'+data.id+'/toggle_state',{},{headers:{"Authorization":"Token token="+this.state.current_user.auth_token}}).then((response)=>{
+    axios.post('https://md-dashboard-backend.herokuapp.com/tasks/'+this.state.currentTodo.id+'/toggle_state',{},{headers:{"Authorization":"Token token="+this.state.current_user.auth_token}}).then((response)=>{
       console.log(response)
-      data.status=response.data.current_state
+      const currentTodo=this.state.currentTodo
+      currentTodo.status=response.data.new_state
       this.setState({
         alertMessage: 'Task  Marked  Successfully',
         showMessage: true,
-        currentTodo: data,
+        currentTodo: currentTodo,
       });
     })
 
@@ -384,7 +392,9 @@ class ToDo extends Component {
             {/*</li>*/}
 
             {/*{this.getNavLabels()}*/}
-            <MeetingSearch handleChange={this.filterByMeeting}/>
+            {(this.state.currentTodo === null || this.state.currentTodo === undefined) ?
+            <MeetingSearch handleChange={this.filterByMeeting} current_user={this.state.current_user}/>:<TaskTimeLine todo={this.state.currentTodo} current_user={this.state.current_user} />
+            }
 
           </ul>
         </CustomScrollbars>
@@ -410,7 +420,7 @@ class ToDo extends Component {
                 onTodoSelect={this.onTodoSelect.bind(this)}
                 onTodoChecked={this.onTodoChecked.bind(this)} useDragHandle={true}/>
       :
-      <ToDoDetail todo={currentTodo} user={user}
+      <ToDoDetail todo={currentTodo} current_user={this.state.current_user}
                   conversation={conversation}
                   onLabelUpdate={this.onLabelUpdate.bind(this)}
                   onToDoUpdate={this.onToDoUpdate.bind(this)}
@@ -419,7 +429,8 @@ class ToDo extends Component {
 
   constructor(props) {
     super(props);
-    const current_user=JSON.parse(sessionStorage.current_user)
+    const current_user=this.props.current_user
+    console.log(this.props)
     this.state = {
       searchTodo: '',
       alertMessage: '',
@@ -429,7 +440,7 @@ class ToDo extends Component {
       optionName: 'None',
       anchorEl: null,
       allToDos: this.props.todos,
-      currentTodo: JSON.parse(this.props.todo.currentTodo),
+      currentTodo: props.currentTodo,
       user: {
         name: 'Robert Johnson',
         email: 'robert.johnson@example.com',
@@ -446,7 +457,6 @@ class ToDo extends Component {
       infilter:false,
     }
     this.get_tasks=this.get_tasks.bind(this)
-    this.get_tasks()
   }
 
   get_tasks=()=>{
@@ -462,6 +472,7 @@ class ToDo extends Component {
 
   componentDidMount() {
     this.manageHeight();
+    this.get_tasks()
   }
 
   componentDidUpdate() {
@@ -528,10 +539,11 @@ class ToDo extends Component {
       loader: true,
       conversation: conversationList
     });
-    window.localStorage.setItem("current_todo",JSON.stringify(todo))
+    // window.localStorage.setItem("current_todo",JSON.stringify(todo))
+    this.props.dispatch(TodoToShow(todo))
     setTimeout(() => {
       this.setState({loader: false});
-    }, 1500);
+    }, 1000);
   }
 
   removeLabel(todo, label) {
@@ -631,7 +643,7 @@ class ToDo extends Component {
                   </Dropdown>
 
                   <div class="width-90">{(this.state.infilter) &&
-                    < TaskForm meeting_id={this.state.meeting.key}/>
+                    < TaskForm meeting_id={this.state.meeting.key} current_user={this.state.current_user}/>
                   }</div>
 
                   {/*{*/}
@@ -647,7 +659,7 @@ class ToDo extends Component {
                 <div className="gx-module-box-topbar">
                   <i className="icon icon-arrow-left gx-icon-btn" onClick={() => {
                     this.setState({currentTodo: null})
-                    window.localStorage.removeItem("current_todo")
+                    this.props.dispatch(TodoToShow(null))
                   }}/>
                 </div>
               }
@@ -666,4 +678,4 @@ class ToDo extends Component {
   }
 }
 
-export default connect(mapDispatchToProps,{TodoToShow})(ToDo)
+export default connect(mapStateToProps)(ToDo)

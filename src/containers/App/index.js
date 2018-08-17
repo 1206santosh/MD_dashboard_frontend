@@ -8,7 +8,10 @@ import AppLocale from "lngProvider";
 import MainApp from "./MainApp";
 import {LAYOUT_TYPE_BOXED, LAYOUT_TYPE_FRAMED, LAYOUT_TYPE_FULL} from "constants/ThemeSetting";
 import SignIn from "components/SignIn/index.js"
-import {auth} from "../../firebase/firebase";
+// import {auth} from "../../firebase/firebase";
+import { bindActionCreators } from 'redux';
+import {userSignIn} from 'appRedux/actions/Auth'
+
 
 
 const RestrictedRoute = ({component: Component, ...rest, authUser}) =>
@@ -32,7 +35,8 @@ const RestrictedRoute = ({component: Component, ...rest, authUser}) =>
 class App extends Component {
   constructor(props){
     super(props)
-    const authUser=sessionStorage.getItem("current_user")
+    console.log(props)
+    const authUser=this.props.current_user
     this.state={authUser:authUser}
   }
   componentWillMount() {
@@ -60,7 +64,7 @@ class App extends Component {
   render() {
     const {match, location, layoutType, locale} = this.props;
     this.setLayoutType(layoutType);
-
+    console.log(this.state.authUser)
     const currentAppLocale = AppLocale[locale.locale];
     return (
       <LocaleProvider locale={currentAppLocale.antd}>
@@ -80,8 +84,10 @@ class App extends Component {
 
 }
 
-const mapStateToProps = ({settings}) => {
+const mapStateToProps = ({settings,auth}) => {
   const {locale, layoutType} = settings;
-  return {locale, layoutType}
+  console.log(auth)
+  const current_user=auth.authUser
+  return {locale, layoutType,current_user}
 };
 export default connect(mapStateToProps)(App);

@@ -1,25 +1,34 @@
 import React from "react";
 import {Avatar, Timeline} from "antd";
 import Widget from "components/Widget";
-import {recentActivity} from "components/Tasks/data";
+// import {recentActivity} from "components/Tasks/data";
 import ActivityItem from "./ActivityItem";
 import axios from "axios"
+import {Redirect} from "react-router-dom";
+import {history} from "../../appRedux/store";
+import {connect} from "react-redux";
+
 const TimeLineItem = Timeline.Item;
 
 class RecentActivity extends React.Component {
 
     constructor(props){
       super(props)
-      const current_user=JSON.parse(sessionStorage.current_user)
+      console.log(history)
+      const current_user=this.props.current_user
       this.state={
         meetings:[],
         current_user:current_user
       }
 
       this.get_meetings=this.get_meetings.bind(this)
-      this.get_meetings()
+
 
     }
+
+  componentWillMount(){
+    this.get_meetings()
+  }
 
     get_meetings=()=>{
       axios.get('https://md-dashboard-backend.herokuapp.com/meetings?recent_activity=true',{headers:{"Authorization":"Token token="+this.state.current_user.auth_token}}).then((response)=>{
@@ -30,6 +39,12 @@ class RecentActivity extends React.Component {
       })
     }
 
+  handleClick=(todo)=> {
+    console.log("todo clicked")
+    return <Redirect to='/inbox' />
+  }
+
+
   render() {
     return (
       <Widget title="RECENT ACTIVITIES" styleName="gx-card-timeline gx-card-eq-height">
@@ -38,19 +53,33 @@ class RecentActivity extends React.Component {
           <div className="gx-timeline-info" key={index}>
             <h4 className="gx-timeline-info-day">{activity.day}</h4>
             <Timeline>
-              {activity.meetings.map((task, index) => {
-                return <TimeLineItem key={index} dot={
+              {(activity.meetings!=null)?
+              activity.meetings.map((task, index) => {
+                return(
+                <div onClick={(task)=>{
+                  console.log("clicked")
+                  history.push('/inbox')
+                }}>
+                <TimeLineItem key={index} dot={
                   <Avatar className="gx-size-24" src=""/>}>
                   <ActivityItem task={task}/>
                 </TimeLineItem>
-              })}
+                </div>
+              )}):<h1>No tasks for {activity.day}</h1>
+              }
+
             </Timeline>
           </div>)}
-        <a href="javascript:void(0);" className="gx-btn-link">ALL ACTIVITIES</a>
+        {/*<a href="javascript:void(0);" className="gx-btn-link">ALL ACTIVITIES</a>*/}
       </Widget>
     );
   }
 }
 
+const mapStateToProps = ({auth}) => {
+  const current_user=auth.authUser
+  return {current_user}
+};
 
-export default RecentActivity;
+
+export default connect(mapStateToProps)(RecentActivity);

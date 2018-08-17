@@ -4,6 +4,7 @@ import {routerMiddleware} from "react-router-redux";
 import createHistory from "history/createBrowserHistory";
 import createSagaMiddleware from "redux-saga";
 import rootSaga from "../sagas/index";
+import storeSynchronize from 'redux-localstore'
 
 const history = createHistory();
 const routeMiddleware = routerMiddleware(history);
@@ -25,8 +26,9 @@ export default function configureStore(initialState) {
       store.replaceReducer(nextRootReducer);
     });
   }
-  console.log(store)
+  storeSynchronize(store)
   return store;
 
 }
+
 export {history};

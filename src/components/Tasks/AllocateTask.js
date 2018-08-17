@@ -1,5 +1,5 @@
 import React from "react";
-import { Select, Spin } from 'antd';
+import { Select} from 'antd';
 import axios from "axios/index";
 const Option = Select.Option;
 

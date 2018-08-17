@@ -1,16 +1,22 @@
-import React, {Component} from "react";
-import {Redirect, Route, Switch} from "react-router-dom";
+import React from "react";
 import {Button, Checkbox, Form, Icon, Input, message} from "antd";
 import IntlMessages from "util/IntlMessages";
-import CircularProgress from "components/CircularProgress/index";
 import axios from 'axios'
-
+import {history} from "../../appRedux/store";
+import {connect} from "react-redux";
+import { bindActionCreators } from 'redux';
+import {userSignInSuccess} from 'appRedux/actions/Auth'
 const FormItem = Form.Item;
 
+const mapDispatchToProps=(dispatch)=>{
+  return {actions: bindActionCreators(userSignInSuccess,dispatch)}
+}
 
 class SignIn extends React.Component{
   constructor(props) {
+    console.log(props)
     super(props)
+    this.handleSubmit=this.handleSubmit.bind(this)
   }
 
 
@@ -22,8 +28,9 @@ class SignIn extends React.Component{
     axios.post('https://md-dashboard-backend.herokuapp.com/login',data).then((response)=>{
       console.log(response)
       if(response.data.success){
-        sessionStorage.setItem('current_user',JSON.stringify(response.data))
+        this.props.dispatch(userSignInSuccess(response.data))
         window.location.href='/'
+
       }
 
     })
@@ -84,4 +91,4 @@ class SignIn extends React.Component{
 
 }
 
-export default SignIn
+export default connect(mapDispatchToProps)(SignIn)

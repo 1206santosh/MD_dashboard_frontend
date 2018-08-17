@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 
 import {onVerticalNavStyleChange, toggleCollapsedSideNav} from "appRedux/actions/Setting";
 import {NAV_STYLE_DRAWER, NAV_STYLE_FIXED, NAV_STYLE_MINI, TAB_SIZE, THEME_TYPE_LITE} from "constants/ThemeSetting";
-
+import {history} from "../../appRedux/store";
 
 class SidebarLogo extends Component {
 
@@ -31,11 +31,11 @@ class SidebarLogo extends Component {
           />
         </div>}
 
-        <div className="gx-site-logo">
+        <div className="gx-site-logo" onClick={()=>{history.push('/')}}>
           {/*{themeType === THEME_TYPE_LITE ? <img src={require("assets/images/logo.png")}/> :*/}
             {/*<img src={require("assets/images/Deepak-About-Deepak_Nitrite-Logo.png")} styles={{width:'10% !important'}}/>*/}
           {/*}*/}
-          <a href="/"> MD DASHBOARD</a>
+           MD DASHBOARD
         </div>
 
       </div>

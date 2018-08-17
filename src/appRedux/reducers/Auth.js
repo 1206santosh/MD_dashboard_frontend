@@ -12,17 +12,19 @@ import {
   SIGNOUT_USER_SUCCESS,
   SIGNUP_USER_SUCCESS
 } from "constants/ActionTypes";
+import {defineState} from "redux-localstore";
 
 const INIT_STATE = {
   loader: false,
   alertMessage: '',
   showMessage: false,
   initURL: '',
-  authUser: localStorage.getItem('user_id'),
+  authUser: null,
 };
 
+const initialState = defineState(INIT_STATE)('auth')
 
-export default (state = INIT_STATE, action) => {
+export default (state = initialState, action) => {
   switch (action.type) {
     case SIGNUP_USER_SUCCESS: {
       return {

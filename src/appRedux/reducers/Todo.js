@@ -1,27 +1,26 @@
 import {CURRENT_TODO} from "constants/ActionTypes"
+import {defineState} from 'redux-localstore'
+
+
 
 
 
 const INITIAL={
-  currentTodo:window.localStorage.getItem("current_todo")
+  currentTodo:null
 }
 
-const Todo=(state=INITIAL,action)=>{
-  console.log(action.type)
-  console.log(action.payload)
+const initialState = defineState(INITIAL)('task')
+
+const TodoReducer=(state=initialState,action)=>{
   switch(action.type){
     case  CURRENT_TODO:
-      console.log("To Do Reducer")
-      console.log(action.payload)
-      console.log({...state,newTodo:action.payload})
-      return {
-        ...state,
-        newTodo: action.payload
-      }
+      state.currentTodo=action.payload
+      console.log(state)
+      return state
     break ;
     default:
       return state
   }
 }
 
-export default Todo
+export default TodoReducer

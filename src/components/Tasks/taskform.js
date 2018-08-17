@@ -16,7 +16,7 @@ const { TextArea } = Input;
 class TaskForm extends React.Component{
    constructor(props){
      super(props)
-     const current_user=JSON.parse(sessionStorage.getItem('current_user'))
+     const current_user=props.current_user
      this.state={visible:false,file_ids:[],users:[],current_user:current_user}
      this.handleSubmit=this.handleSubmit.bind(this)
      this.handleUpload=this.handleUpload.bind(this)
@@ -34,7 +34,6 @@ class TaskForm extends React.Component{
 
   get_users=()=>{
     axios.get('https://md-dashboard-backend.herokuapp.com/users_list',{headers:{"Authorization":"Token token="+this.state.current_user.auth_token}}).then((response)=>{
-      console.log(response.data)
       this.setState(
         {
           users:response.data
@@ -73,7 +72,6 @@ class TaskForm extends React.Component{
      const assignee=this.state.assignee
      formdata.task={description:description,due_date:due_date,meeting_id:meeting_id,assignee_id:assignee}
      axios.post("https://md-dashboard-backend.herokuapp.com/tasks",formdata,{headers:{"Authorization":"Token token="+this.state.current_user.auth_token}}).then((response)=>{
-       console.log(response)
        window.location.reload()
      })
 
@@ -88,7 +86,7 @@ class TaskForm extends React.Component{
   }
 
   handleUpload=(file)=>{
-    if(file.file.status=="done"){
+    if(file.file.status==="done"){
       const file_ids=file.file.response.id
      const p_files_ids=this.state.file_ids
       console.log(p_files_ids)
@@ -117,7 +115,6 @@ class TaskForm extends React.Component{
       )
     }
 
-    console.log(this.props)
 
     return(
       <div>

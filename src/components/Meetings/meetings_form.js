@@ -1,7 +1,7 @@
 import React from "react";
 import axios from 'axios';
 import { Modal, Button } from 'antd';
-import { Form, Icon, Input,DatePicker,Select} from 'antd';
+import { Form, Input,DatePicker,Select} from 'antd';
 
 
 
@@ -13,7 +13,7 @@ const Option = Select.Option;
 class MeetingsForm extends React.Component{
   constructor(props){
     super(props)
-    const current_user=JSON.parse(sessionStorage.current_user)
+    const current_user=props.current_user
     this.state = { visible: false ,date:"",users:[],current_user:current_user,loading: false}
     this.handleSubmit=this.handleSubmit.bind(this)
     this.get_date=this.get_date.bind(this)
@@ -134,7 +134,7 @@ class MeetingsForm extends React.Component{
 
             <FormItem
               {...formItemLayout}
-              label="Task"
+              label="Description"
             >
               <TextArea ref="description" name="description" id="description" styles={{width:'100%'}}   />
             </FormItem>
@@ -142,7 +142,7 @@ class MeetingsForm extends React.Component{
 
             <FormItem
               {...formItemLayout}
-              label="Due Date"
+              label="Sheduled Time"
             >
 
               <DatePicker showTime format="YYYY-MM-DD HH:mm:ss"  ref="scheduled_time" name="scheduled_time" id="scheduled_time" onChange={this.get_date}/>
@@ -154,7 +154,14 @@ class MeetingsForm extends React.Component{
               label="Attendees"
             >
 
-              <Select mode="multiple"  id="attendess" refs="attendess" onChange={this.get_attendees} >
+              <Select
+                showSearch
+                mode="multiple"
+                id="attendess"
+                refs="attendess"
+                optionFilterProp="children"
+                filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                onChange={this.get_attendees} >
                 {user_options()}
               </Select>
             </FormItem>
