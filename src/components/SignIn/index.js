@@ -14,7 +14,6 @@ const mapDispatchToProps=(dispatch)=>{
 
 class SignIn extends React.Component{
   constructor(props) {
-    console.log(props)
     super(props)
     this.handleSubmit=this.handleSubmit.bind(this)
   }
@@ -26,7 +25,6 @@ class SignIn extends React.Component{
     const user_password=document.getElementById('user_password').value
     const data={login_cred:user_email,password:user_password}
     axios.post('https://md-dashboard-backend.herokuapp.com/login',data).then((response)=>{
-      console.log(response)
       if(response.data.success){
         this.props.dispatch(userSignInSuccess(response.data))
         window.location.href='/'

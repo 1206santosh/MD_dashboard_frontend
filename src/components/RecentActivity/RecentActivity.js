@@ -14,7 +14,6 @@ class RecentActivity extends React.Component {
 
     constructor(props){
       super(props)
-      console.log(history)
       const current_user=this.props.current_user
       this.state={
         meetings:[],
@@ -32,7 +31,6 @@ class RecentActivity extends React.Component {
 
     get_meetings=()=>{
       axios.get('https://md-dashboard-backend.herokuapp.com/meetings?recent_activity=true',{headers:{"Authorization":"Token token="+this.state.current_user.auth_token}}).then((response)=>{
-        console.log(response)
         this.setState({
           meetings:response.data,
         })
@@ -40,7 +38,6 @@ class RecentActivity extends React.Component {
     }
 
   handleClick=(todo)=> {
-    console.log("todo clicked")
     return <Redirect to='/inbox' />
   }
 
@@ -57,7 +54,6 @@ class RecentActivity extends React.Component {
               activity.meetings.map((task, index) => {
                 return(
                 <div onClick={(task)=>{
-                  console.log("clicked")
                   history.push('/inbox')
                 }}>
                 <TimeLineItem key={index} dot={
@@ -65,7 +61,7 @@ class RecentActivity extends React.Component {
                   <ActivityItem task={task}/>
                 </TimeLineItem>
                 </div>
-              )}):<h1>No tasks for {activity.day}</h1>
+              )}):<h1>No Meetings for {activity.day}</h1>
               }
 
             </Timeline>

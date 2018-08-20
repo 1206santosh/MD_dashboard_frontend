@@ -35,7 +35,6 @@ const RestrictedRoute = ({component: Component, ...rest, authUser}) =>
 class App extends Component {
   constructor(props){
     super(props)
-    console.log(props)
     const authUser=this.props.current_user
     this.state={authUser:authUser}
   }
@@ -64,7 +63,6 @@ class App extends Component {
   render() {
     const {match, location, layoutType, locale} = this.props;
     this.setLayoutType(layoutType);
-    console.log(this.state.authUser)
     const currentAppLocale = AppLocale[locale.locale];
     return (
       <LocaleProvider locale={currentAppLocale.antd}>
@@ -86,7 +84,6 @@ class App extends Component {
 
 const mapStateToProps = ({settings,auth}) => {
   const {locale, layoutType} = settings;
-  console.log(auth)
   const current_user=auth.authUser
   return {locale, layoutType,current_user}
 };

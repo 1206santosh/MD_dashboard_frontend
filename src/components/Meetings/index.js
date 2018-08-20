@@ -30,7 +30,6 @@ class MeetingsList extends React.Component{
 
 
   get_meetings=()=>{
-    console.log(this.state.current_user.auth_token)
     axios.get('https://md-dashboard-backend.herokuapp.com/meetings',{headers:{"Authorization":"Token token="+this.state.current_user.auth_token}}).then((response)=>{
         this.setState({
           data:response.data,
@@ -40,9 +39,7 @@ class MeetingsList extends React.Component{
 
   handleExpansion=(expanded,record)=> {
     if (expanded) {
-      console.log(record)
       axios.get('https://md-dashboard-backend.herokuapp.com/tasks?meeting_id='+record.id,{headers:{"Authorization":"Token token="+this.state.current_user.auth_token}}).then((response)=>{
-        console.log(response)
         let meeting_tasks={}
         meeting_tasks["meeting"+record.id]=response.data
         this.setState(meeting_tasks)
@@ -66,7 +63,7 @@ class MeetingsList extends React.Component{
       { title: 'Status', dataIndex: 'status', key: 'status' },
       { title: 'Due Date', dataIndex: 'due_date', key: 'due_date' },
     ];
-    console.log(record.id)
+
 
     const task_form=<TaskForm meeting_id={record.id} current_user={this.state.current_user}/>
 
@@ -133,7 +130,7 @@ class MeetingsList extends React.Component{
     //   ];
 
 
-   console.log(this.state.data)
+
     return(
       <div>
         <h1>Meeting List</h1>

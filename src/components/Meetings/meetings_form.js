@@ -30,21 +30,18 @@ class MeetingsForm extends React.Component{
   }
 
   handleOk = (e) => {
-    console.log(e);
     this.setState({
       visible: false,
     });
   }
 
   handleCancel = (e) => {
-    console.log(e);
     this.setState({
       visible: false,
     });
   }
 
   get_attendees=(value)=>{
-    console.log(value)
     this.setState({
       attendees:value
     })
@@ -52,7 +49,6 @@ class MeetingsForm extends React.Component{
 
   get_users=()=>{
     axios.get('https://md-dashboard-backend.herokuapp.com/users_list',{headers:{"Authorization":"Token token="+this.state.current_user.auth_token}}).then((response)=>{
-      console.log(response)
       this.setState(
         {
           users:response.data
@@ -63,24 +59,19 @@ class MeetingsForm extends React.Component{
 
   handleSubmit = (e) => {
     e.preventDefault();
-    console.log(e)
     const formData={meeting:''}
     let description=document.getElementById('description').value
     let scheduled_time=this.state.date
     let attendess=this.state.attendees
-    console.log(attendess)
     formData.meeting={description:description,scheduled_time:scheduled_time}
     formData.attendess=attendess
-    console.log(formData)
     axios.post('https://md-dashboard-backend.herokuapp.com/meetings',formData,{headers:{"Authorization":"Token token="+this.state.current_user.auth_token}}).then(function (response) {
-      console.log(response)
       window.location.reload()
 
 
     })
       .catch(function (error) {
         console.log(error)
-
       })
 
     this.setState({
@@ -90,8 +81,6 @@ class MeetingsForm extends React.Component{
   }
 
   get_date=(date,dateString)=>{
-    console.log(date)
-    console.log(dateString)
     this.setState({
       date:dateString
     })

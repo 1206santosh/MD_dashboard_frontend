@@ -172,7 +172,7 @@ class ToDoDetail extends React.Component {
     const comments=this.state.comments_by_user.length>0 ? this.state.comments_by_user.map((comment, index) => <ConversationCell key={index} comment={comment}/>):""
     // const comments=<div></div>
     let user = null;
-    console.log(todo)
+
 
     const uploads_list=this.state.uploads.length >0 ? this.state.uploads.map((u)=> <li><a target={"_blank"} href={u.file_url}>{u.filename}</a></li>):""
     // if (todo.user > 0)

@@ -26,7 +26,6 @@ class TaskForm extends React.Component{
    }
 
   get_assignee=(value)=>{
-    console.log(value)
     this.setState({
       assignee:value
     })
@@ -49,14 +48,12 @@ class TaskForm extends React.Component{
   }
 
   handleOk = (e) => {
-    console.log(e);
     this.setState({
       visible: false,
     });
   }
 
   handleCancel = (e) => {
-    console.log(e);
     this.setState({
       visible: false,
     });
@@ -78,8 +75,6 @@ class TaskForm extends React.Component{
   }
 
   get_date=(date,dateString)=>{
-    console.log(date)
-    console.log(dateString)
     this.setState({
       date:dateString
     })
@@ -89,9 +84,7 @@ class TaskForm extends React.Component{
     if(file.file.status==="done"){
       const file_ids=file.file.response.id
      const p_files_ids=this.state.file_ids
-      console.log(p_files_ids)
      const n_files_ids=[...p_files_ids,file_ids]
-      console.log(n_files_ids)
       this.setState({
         file_ids:n_files_ids
       })

@@ -15,7 +15,6 @@ const TodoReducer=(state=initialState,action)=>{
   switch(action.type){
     case  CURRENT_TODO:
       state.currentTodo=action.payload
-      console.log(state)
       return state
     break ;
     default:

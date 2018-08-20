@@ -19,7 +19,6 @@ class AllocateTask extends React.Component {
 
   get_users=()=>{
     axios.get('https://md-dashboard-backend.herokuapp.com/users_list',{headers:{"Authorization":"Token token="+this.state.current_user.auth_token}}).then((response)=>{
-      console.log(response.data)
       this.setState(
         {
           users:response.data

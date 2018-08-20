@@ -2,7 +2,6 @@ import React from "react";
 import {Avatar} from "antd";
 
 const ConversationCell = ({comment}) => {
-  console.log(comment)
   return (
     <div className="gx-flex-row gx-module-detail-item gx-flex-nowrap">
       <div className="gx-chat-todo-avatar">

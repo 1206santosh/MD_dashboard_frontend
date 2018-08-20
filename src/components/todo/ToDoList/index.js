@@ -4,7 +4,6 @@ import CustomScrollbars from 'util/CustomScrollbars'
 import ToDoItem from "./ToDoItem/index";
 
 const ToDoList = (({toDos, onTodoSelect, onTodoChecked, onMarkAsStart}) => {
-  console.log(toDos)
   return (
     <div className="gx-module-list">
       <CustomScrollbars className="gx-module-content-scroll">

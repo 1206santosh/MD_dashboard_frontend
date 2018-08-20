@@ -26,7 +26,6 @@ const mapStateToProps = ({auth}) => {
 class TaskList extends React.Component {
   constructor(props){
     super(props)
-    console.log(props)
     const current_user=props.current_user
     this.state={today_tasks:[],current_user:current_user,upcomming_tasks:[]}
     this.get_tasks=this.get_tasks.bind(this)
@@ -71,9 +70,7 @@ class TaskList extends React.Component {
 
   redirectToTask=(task)=> {
     history.push('/inbox')
-    // console.log(this.props.dispatch(task))
     this.props.dispatch(TodoToShow(task))
-    console.log(store.getState())
   }
 
   render(){

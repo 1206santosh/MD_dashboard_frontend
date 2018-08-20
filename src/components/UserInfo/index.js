@@ -13,11 +13,12 @@ class UserInfo extends Component {
   constructor(props){
     super(props)
     this.logOut=this.logOut.bind(this)
-    window.location.reload()
+
   }
 
   logOut=(e)=>{
     this.props.dispatch(userSignOut())
+    window.location.reload()
   }
 
   render() {

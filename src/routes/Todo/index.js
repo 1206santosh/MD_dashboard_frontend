@@ -30,7 +30,6 @@ const mapDispatchToProps=(dispatch)=>{
 
 
 const mapStateToProps=state=>{
-   console.log(state)
    const currentTodo=state.task.currentTodo
    const current_user=state.auth.authUser
   return {currentTodo,current_user}
@@ -227,7 +226,6 @@ class ToDo extends Component {
   onToDoUpdate = (data) => {
     this.handleRequestClose();
     axios.post('https://md-dashboard-backend.herokuapp.com/tasks/'+this.state.currentTodo.id+'/toggle_state',{},{headers:{"Authorization":"Token token="+this.state.current_user.auth_token}}).then((response)=>{
-      console.log(response)
       const currentTodo=this.state.currentTodo
       currentTodo.status=response.data.new_state
       this.setState({
@@ -430,7 +428,6 @@ class ToDo extends Component {
   constructor(props) {
     super(props);
     const current_user=this.props.current_user
-    console.log(this.props)
     this.state = {
       searchTodo: '',
       alertMessage: '',

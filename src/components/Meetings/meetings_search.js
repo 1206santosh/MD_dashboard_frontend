@@ -23,9 +23,7 @@ class MeetingSearch extends Component{
   }
 
   get_meetings=()=>{
-    console.log(this.state.current_user.auth_token)
     axios.get('https://md-dashboard-backend.herokuapp.com/meetings',{headers:{"Authorization":"Token token="+this.state.current_user.auth_token}}).then((response)=>{
-      console.log(response)
       this.setState({
         allMeetings:response.data,
         data: response.data
@@ -33,9 +31,7 @@ class MeetingSearch extends Component{
     })
   }
 
-  // handleChange = (value) => {
-  //   console.log(value)
-  // }
+
 
   // fetchMeeting=(value)=>{
   //   this.setState({ data: [], fetching: true });
