@@ -13,13 +13,13 @@ class Inbox extends React.Component{
 
   }
 
-  get_tasks=()=>{
-    axios.get('https://md-dashboard-backend.herokuapp.com/tasks').then((response)=>{
-      this.setState({
-        tasks:response.data
-      })
-    })
-  }
+  // get_tasks=()=>{
+  //   axios.get('https://md-dashboard-backend.herokuapp.com/tasks').then((response)=>{
+  //     this.setState({
+  //       tasks:response.data
+  //     })
+  //   })
+  // }
 
 
   render(){

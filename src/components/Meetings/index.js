@@ -24,8 +24,12 @@ class MeetingsList extends React.Component{
     this.get_task_table=this.get_task_table.bind(this)
     // this.set_tasks=this.set_tasks.bind(this)
     // this.handleExpansion=this.handleExpansion.bind(this)
-    this.get_meetings()
 
+
+  }
+
+  componentWillMount(){
+    this.get_meetings()
   }
 
 

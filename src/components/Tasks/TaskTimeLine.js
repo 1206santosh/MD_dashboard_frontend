@@ -23,9 +23,15 @@ class TaskTimeLine extends React.Component {
     }
 
     this.get_timeline=this.get_timeline.bind(this)
-    this.get_timeline()
+
 
   }
+
+  componentDidMount(){
+    this.get_timeline()
+  }
+
+
 
   get_timeline=()=>{
     axios.get('https://md-dashboard-backend.herokuapp.com/tasks/'+this.state.currentTodo.id+'/task_timeline',{headers:{"Authorization":"Token token="+this.state.current_user.auth_token}}).then((response)=>{
