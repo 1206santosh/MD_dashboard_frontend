@@ -17,6 +17,7 @@ const {TextArea} = Input;
 class ToDoDetail extends React.Component {
   constructor(props) {
     super(props);
+    console.log(props)
     const {description, notes} = props.todo;
     const current_user=props.current_user
     this.state = {

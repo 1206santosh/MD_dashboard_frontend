@@ -12,7 +12,7 @@ import IntlMessages from "util/IntlMessages";
 import axios from "axios/index";
 import TaskForm from "components/Tasks/taskform";
 import {connect} from 'react-redux';
-import TodoToShow from "appRedux/actions/Todo";
+import {TodoToShow} from "appRedux/actions/Todo";
 import MeetingSearch from "components/Meetings/meetings_search"
 import configureStore from "../../appRedux/store";
 import TaskTimeLine from "../../components/Tasks/TaskTimeLine";
@@ -28,12 +28,23 @@ const mapDispatchToProps=(dispatch)=>{
   return {actions: bindActionCreators(TodoToShow,dispatch)}
 }
 
+const mapStateToProps = ({auth,task}) => {
+  console.log(task)
+  const current_user=auth.authUser
+  let currentTodo=null
+  if(task.currentTodo){
+     currentTodo=task.currentTodo.payload
+  }
 
-const mapStateToProps=state=>{
-   const currentTodo=state.task.currentTodo
-   const current_user=state.auth.authUser
-  return {currentTodo,current_user}
-}
+
+  return {current_user,currentTodo}
+};
+//
+// const mapStateToProps=state=>{
+//    const currentTodo=state.task.currentTodo
+//    const current_user=state.auth.authUser
+//   return {currentTodo,current_user}
+// }
 
 class ToDo extends Component {
 
@@ -339,7 +350,7 @@ class ToDo extends Component {
       toDos:todos,
       loader:false,
       infilter:true,
-      meeting:meeting_id
+      meeting:meeting_id.key
 
     })
   };
@@ -427,7 +438,9 @@ class ToDo extends Component {
 
   constructor(props) {
     super(props);
+    console.log(props)
     const current_user=this.props.current_user
+    const currentTodo=props.currentTodo
     this.state = {
       searchTodo: '',
       alertMessage: '',
@@ -437,7 +450,7 @@ class ToDo extends Component {
       optionName: 'None',
       anchorEl: null,
       allToDos: this.props.todos,
-      currentTodo: props.currentTodo,
+      currentTodo: currentTodo,
       user: {
         name: 'Robert Johnson',
         email: 'robert.johnson@example.com',
@@ -640,7 +653,7 @@ class ToDo extends Component {
                   </Dropdown>
 
                   <div class="width-90">{(this.state.infilter) &&
-                    < TaskForm meeting_id={this.state.meeting.key} current_user={this.state.current_user}/>
+                    < TaskForm meeting_id={this.state.meeting} current_user={this.state.current_user}/>
                   }</div>
 
                   {/*{*/}

@@ -1,13 +1,13 @@
 import React from "react";
 import {Button, Checkbox, Form, Icon, Input, message} from "antd";
-import IntlMessages from "util/IntlMessages";
 import axios from 'axios'
-import {history} from "../../appRedux/store";
 import {connect} from "react-redux";
 import { bindActionCreators } from 'redux';
 import {userSignInSuccess} from 'appRedux/actions/Auth'
-const FormItem = Form.Item;
 
+
+
+const FormItem = Form.Item;
 const mapDispatchToProps=(dispatch)=>{
   return {actions: bindActionCreators(userSignInSuccess,dispatch)}
 }
@@ -38,51 +38,46 @@ class SignIn extends React.Component{
 
   render(){
     return (
-      <div className="gx-app-login-wrap">
-        <div className="gx-app-login-container">
-          <div className="gx-app-login-main-content">
-            <div className="gx-app-logo-content" style={{backgroundImage:"none"}}>
-              <div className="gx-app-logo-wid">
-                <h1><IntlMessages id="app.userAuth.signIn"/></h1>
-                {/*<p><IntlMessages id="app.userAuth.bySigning"/></p>*/}
-                {/*<p><IntlMessages id="app.userAuth.getAccount"/></p>*/}
-              </div>
-              <div className="gx-app-logo">
-                {/*<img alt="example" src={require("assets/images/logo-white.png")}/>*/}
-              </div>
-            </div>
-            <div className="gx-app-login-content">
-              <Form onSubmit={this.handleSubmit} className="gx-signin-form gx-form-row0">
-                <FormItem>
-                    <Input placeholder="Email" id="user_email"/>
-                </FormItem>
-                <FormItem>
-                    <Input type="password" placeholder="Password" id="user_password"/>
-                </FormItem>
-                {/*<FormItem>*/}
-                  {/*{getFieldDecorator('remember', {*/}
-                    {/*valuePropName: 'checked',*/}
-                    {/*initialValue: true,*/}
-                  {/*})(*/}
-                    {/*<Checkbox><IntlMessages id="appModule.iAccept"/></Checkbox>*/}
-                  {/*)}*/}
-                  {/*<a className="gx-signup-form-forgot" href="javascript:void(0);"><IntlMessages*/}
-                    {/*id="appModule.termAndCondition"/></a>*/}
-                {/*</FormItem>*/}
-                <FormItem>
-                  <Button type="primary" className="gx-mb-0" htmlType="submit">
-                    <IntlMessages id="app.userAuth.signIn"/>
-                  </Button>
-                  {/*<span><IntlMessages id="app.userAuth.or"/></span> <Link to="/signup"><IntlMessages*/}
-                  {/*id="app.userAuth.signUp"/></Link>*/}
-                </FormItem>
-                {/*<span*/}
-                  {/*className="gx-text-light gx-fs-sm"> demo user email: 'demo@example.com' and password: 'demo#123'</span>*/}
-              </Form>
-            </div>
-          </div>
+    <div className="gx-login-container">
+      <div className="gx-login-content">
+        <div className="gx-login-header gx-text-center">
+          <h1 className="gx-login-title">Sign In</h1>
         </div>
+        <Form onSubmit={this.handleSubmit} className="gx-login-form gx-form-row0">
+          <FormItem>
+            {/*{getFieldDecorator('email', {*/}
+              {/*rules: [{required: true, message: 'Please input your username!'}],*/}
+            {/*})(*/}
+              <Input prefix={<Icon type="user" style={{color: 'rgba(0,0,0,.25)'}}/>}
+                     placeholder="Username" id="user_email"/>
+            {/*)}*/}
+          </FormItem>
+          <FormItem>
+            {/*{getFieldDecorator('password', {*/}
+              {/*rules: [{required: true, message: 'Please input your Password!'}],*/}
+            {/*})(*/}
+              <Input prefix={<Icon type="lock" style={{color: 'rgba(0,0,0,.25)'}}/>}
+                     type="password"
+                     placeholder="Password" id="user_password"/>
+            {/*)}*/}
+          </FormItem>
+          <FormItem>
+            {/*{getFieldDecorator('remember', {*/}
+              {/*valuePropName: 'checked',*/}
+              {/*initialValue: true,*/}
+            {/*})(*/}
+              {/*<Checkbox>Remember me</Checkbox>*/}
+            {/*)}*/}
+            {/*<Link className="gx-login-form-forgot" to="/custom-views/user-auth/forgot-password">Forgot password</Link>*/}
+          </FormItem>
+          <FormItem className="gx-text-center">
+            <Button type="primary" htmlType="submit">
+              Log in
+            </Button>
+          </FormItem>
+        </Form>
       </div>
+    </div>
     );
   }
 

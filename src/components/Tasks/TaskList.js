@@ -4,7 +4,7 @@ import Widget from "components/Widget";
 import TaskItem from "./TaskItem";
 import axios from "axios/index";
 import {history} from "../../appRedux/store";
-import TodoToShow from "appRedux/actions/Todo"
+import {TodoToShow} from "appRedux/actions/Todo"
 import configureStore from "../../appRedux/store";
 import {connect} from "react-redux";
 import { bindActionCreators } from 'redux';
@@ -14,7 +14,7 @@ const store = configureStore()
 
 
 const mapDispatchToProps=(dispatch)=>{
-  return {actions: bindActionCreators(TodoToShow,dispatch)}
+  return {dispatch: bindActionCreators(TodoToShow,dispatch)}
 }
 
 const mapStateToProps = ({auth}) => {
@@ -26,6 +26,7 @@ const mapStateToProps = ({auth}) => {
 class TaskList extends React.Component {
   constructor(props){
     super(props)
+    console.log(props)
     const current_user=props.current_user
     this.state={today_tasks:[],current_user:current_user,upcomming_tasks:[]}
     this.get_tasks=this.get_tasks.bind(this)
@@ -69,8 +70,10 @@ class TaskList extends React.Component {
   };
 
   redirectToTask=(task)=> {
-    history.push('/inbox')
+    console.log(task)
     this.props.dispatch(TodoToShow(task))
+    history.push('/inbox')
+    // console.log(this.props)
   }
 
   render(){
@@ -87,10 +90,7 @@ class TaskList extends React.Component {
           </TabPane>
           <TabPane tab="Upcoming Tasks" key="2">{
             this.state.upcomming_tasks.map((task, index) =>
-              <TaskItem key={index} data={task} onChange={this.onChange} onClick={()=>{
-                history.push('/inbox')
-                this.props.currentTodo(task)
-              }}/>
+              <TaskItem key={index} data={task} onChange={this.onChange} onClick={this.redirectToTask} />
 
                 )
           }</TabPane>

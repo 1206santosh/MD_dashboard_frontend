@@ -7,13 +7,21 @@ import axios from "axios"
 import {Redirect} from "react-router-dom";
 import {history} from "../../appRedux/store";
 import {connect} from "react-redux";
+import {MeetingFilter} from "appRedux/actions/Todo"
+import {bindActionCreators} from "redux";
 
 const TimeLineItem = Timeline.Item;
+
+
+const mapDispatchToProps=(dispatch)=>{
+  return {dispatch: bindActionCreators(MeetingFilter,dispatch)}
+}
 
 class RecentActivity extends React.Component {
 
     constructor(props){
       super(props)
+      console.log(props)
       const current_user=this.props.current_user
       this.state={
         meetings:[],
@@ -54,6 +62,7 @@ class RecentActivity extends React.Component {
               activity.meetings.map((task, index) => {
                 return(
                 <div onClick={(task)=>{
+                  this.props.dispatch(task.id)
                   history.push('/inbox')
                 }}>
                 <TimeLineItem key={index} dot={
@@ -78,4 +87,4 @@ const mapStateToProps = ({auth}) => {
 };
 
 
-export default connect(mapStateToProps)(RecentActivity);
+export default connect(mapStateToProps,mapDispatchToProps)(RecentActivity);

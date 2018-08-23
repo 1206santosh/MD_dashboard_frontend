@@ -1,4 +1,4 @@
-import {CURRENT_TODO} from "constants/ActionTypes"
+import {CURRENT_TODO,MEETING_FILTER} from "constants/ActionTypes"
 import {defineState} from 'redux-localstore'
 
 
@@ -17,6 +17,11 @@ const TodoReducer=(state=initialState,action)=>{
       state.currentTodo=action.payload
       return state
     break ;
+    case MEETING_FILTER:
+      if(state.meeting) {
+        state.infilter =true
+        state.meeting=action.payload
+      }
     default:
       return state
   }

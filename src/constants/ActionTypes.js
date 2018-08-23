@@ -29,4 +29,5 @@ export const INIT_URL = 'INIT_URL';
 //Todo const
 
 export const CURRENT_TODO="CURRENT_TODO"
+export const MEETING_FILTER="MEETING_FILTER"
 

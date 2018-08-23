@@ -8,7 +8,7 @@ class Inbox extends React.Component{
   constructor(props){
     super(props)
     this.state={tasks:[]}
-    this.get_tasks=this.get_tasks.bind(this)
+    // this.get_tasks=this.get_tasks.bind(this)
     // this.get_tasks()
 
   }

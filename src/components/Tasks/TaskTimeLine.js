@@ -14,6 +14,7 @@ class TaskTimeLine extends React.Component {
 
   constructor(props){
     super(props)
+    console.log(props)
     const current_user=props.current_user
     this.state={
       meetings:[],
@@ -34,6 +35,7 @@ class TaskTimeLine extends React.Component {
 
 
   get_timeline=()=>{
+    console.log(this.state.currentTodo)
     axios.get('https://md-dashboard-backend.herokuapp.com/tasks/'+this.state.currentTodo.id+'/task_timeline',{headers:{"Authorization":"Token token="+this.state.current_user.auth_token}}).then((response)=>{
       this.setState({
         timeline:response.data,

@@ -1,15 +1,24 @@
-import {CURRENT_TODO} from "constants/ActionTypes"
+import {CURRENT_TODO,MEETING_FILTER} from "constants/ActionTypes"
 
 
 
 
 
-
- const TodoToShow=(todo)=>{
+export const  TodoToShow=(todo)=>{
   return{
     type: CURRENT_TODO,
     payload: todo
   }
 }
 
-export default TodoToShow
+export const MeetingFilter=(meeting)=>{
+  return{
+    type: MEETING_FILTER,
+    payload: meeting
+  }
+}
+
+
+
+
+
