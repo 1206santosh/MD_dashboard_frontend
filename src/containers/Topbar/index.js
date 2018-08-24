@@ -74,10 +74,10 @@ class Topbar extends Component {
           </div> : null}
 
 
-          <SearchBox styleName="gx-d-none gx-d-lg-block gx-lt-icon-search-bar-lg"
-                     placeholder="Search in app..."
-                     onChange={this.updateSearchChatUser.bind(this)}
-                     value={this.state.searchText}/>
+          {/*<SearchBox styleName="gx-d-none gx-d-lg-block gx-lt-icon-search-bar-lg"*/}
+                     {/*placeholder="Search in app..."*/}
+                     {/*onChange={this.updateSearchChatUser.bind(this)}*/}
+                     {/*value={this.state.searchText}/>*/}
 
           {width >= TAB_SIZE && navStyle === HORIZONTAL_NAVIGATION && horizontalNavPosition === INSIDE_THE_HEADER ?
             <HorizontalNav/> : null}

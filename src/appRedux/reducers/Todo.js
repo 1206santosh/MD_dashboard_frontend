@@ -6,7 +6,9 @@ import {defineState} from 'redux-localstore'
 
 
 const INITIAL={
-  currentTodo:null
+  currentTodo:null,
+  infilter:false,
+  meeting:""
 }
 
 const initialState = defineState(INITIAL)('task')
@@ -18,10 +20,9 @@ const TodoReducer=(state=initialState,action)=>{
       return state
     break ;
     case MEETING_FILTER:
-      if(state.meeting) {
         state.infilter =true
         state.meeting=action.payload
-      }
+
     default:
       return state
   }

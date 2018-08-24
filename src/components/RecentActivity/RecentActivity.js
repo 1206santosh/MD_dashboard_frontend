@@ -45,8 +45,9 @@ class RecentActivity extends React.Component {
       })
     }
 
-  handleClick=(todo)=> {
-    return <Redirect to='/inbox' />
+  handleClick=(task)=> {
+    this.props.dispatch({key:task.id,label:task.description})
+    history.push('/inbox')
   }
 
 
@@ -61,15 +62,10 @@ class RecentActivity extends React.Component {
               {(activity.meetings!=null)?
               activity.meetings.map((task, index) => {
                 return(
-                <div onClick={(task)=>{
-                  this.props.dispatch(task.id)
-                  history.push('/inbox')
-                }}>
                 <TimeLineItem key={index} dot={
                   <Avatar className="gx-size-24" src=""/>}>
-                  <ActivityItem task={task}/>
+                  <ActivityItem task={task} handleClick={this.handleClick}/>
                 </TimeLineItem>
-                </div>
               )}):<h1>No Meetings for {activity.day}</h1>
               }
 

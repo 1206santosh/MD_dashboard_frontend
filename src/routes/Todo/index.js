@@ -12,7 +12,7 @@ import IntlMessages from "util/IntlMessages";
 import axios from "axios/index";
 import TaskForm from "components/Tasks/taskform";
 import {connect} from 'react-redux';
-import {TodoToShow} from "appRedux/actions/Todo";
+import {TodoToShow,MeetingFilter} from "appRedux/actions/Todo";
 import MeetingSearch from "components/Meetings/meetings_search"
 import configureStore from "../../appRedux/store";
 import TaskTimeLine from "../../components/Tasks/TaskTimeLine";
@@ -25,7 +25,7 @@ const ITEM_HEIGHT = 34;
 export const store = configureStore();
 
 const mapDispatchToProps=(dispatch)=>{
-  return {actions: bindActionCreators(TodoToShow,dispatch)}
+  return {actions: bindActionCreators(TodoToShow,dispatch),select_meeting:bindActionCreators(MeetingFilter,dispatch)}
 }
 
 const mapStateToProps = ({auth,task}) => {
@@ -37,7 +37,9 @@ const mapStateToProps = ({auth,task}) => {
   }
 
 
-  return {current_user,currentTodo}
+
+
+  return {current_user,task}
 };
 //
 // const mapStateToProps=state=>{
@@ -336,7 +338,7 @@ class ToDo extends Component {
   };
 
   filterByMeeting=(meeting_id)=>{
-
+    console.log("in filter")
     this.setState({
       loader: true
     })
@@ -350,9 +352,9 @@ class ToDo extends Component {
       toDos:todos,
       loader:false,
       infilter:true,
-      meeting:meeting_id.key
-
+      meeting:meeting_id
     })
+    this.props.select_meeting(meeting_id)
   };
 
 
@@ -378,9 +380,12 @@ class ToDo extends Component {
           <ul className="gx-module-nav">
 
             <li onClick={() => {
+              "all"
               this.setState({
                 currentTodo: null,
-                toDos: this.state.allToDos
+                toDos: this.state.allToDos,
+                infilter:false,
+                meeting:""
               });
             }
             }>
@@ -402,7 +407,7 @@ class ToDo extends Component {
 
             {/*{this.getNavLabels()}*/}
             {(this.state.currentTodo === null || this.state.currentTodo === undefined) ?
-            <MeetingSearch handleChange={this.filterByMeeting} current_user={this.state.current_user}/>:<TaskTimeLine todo={this.state.currentTodo} current_user={this.state.current_user} />
+            <MeetingSearch handleChange={this.filterByMeeting} current_user={this.state.current_user}  selected_meeting={this.state.meeting}/>:<TaskTimeLine todo={this.state.currentTodo} current_user={this.state.current_user} />
             }
 
           </ul>
@@ -422,12 +427,13 @@ class ToDo extends Component {
     }
   };
   showToDos = ({currentTodo, toDos, conversation, user}) => {
-    const task_id=window.location.href.split("/")
     return (currentTodo === null  || currentTodo===undefined) ?
-      <ToDoList toDos={toDos} onSortEnd={this.onSortEnd}
+      <ToDoList toDos={toDos}
+                onSortEnd={this.onSortEnd}
                 onMarkAsStart={this.onMarkAsStart.bind(this)}
                 onTodoSelect={this.onTodoSelect.bind(this)}
-                onTodoChecked={this.onTodoChecked.bind(this)} useDragHandle={true}/>
+                onTodoChecked={this.onTodoChecked.bind(this)}
+                useDragHandle={true}/>
       :
       <ToDoDetail todo={currentTodo} current_user={this.state.current_user}
                   conversation={conversation}
@@ -440,7 +446,7 @@ class ToDo extends Component {
     super(props);
     console.log(props)
     const current_user=this.props.current_user
-    const currentTodo=props.currentTodo
+    const task=props.task
     this.state = {
       searchTodo: '',
       alertMessage: '',
@@ -450,7 +456,7 @@ class ToDo extends Component {
       optionName: 'None',
       anchorEl: null,
       allToDos: this.props.todos,
-      currentTodo: currentTodo,
+      currentTodo:task.currentTodo ? task.currentTodo.payload: null,
       user: {
         name: 'Robert Johnson',
         email: 'robert.johnson@example.com',
@@ -459,23 +465,28 @@ class ToDo extends Component {
       selectedToDos: 0,
       labelMenuState: false,
       optionMenuState: false,
-      toDos: this.props.todos,
+      toDos: [],
       filter: -1,
       todoConversation,
       conversation: null,
       current_user:current_user,
-      infilter:false,
+      infilter:task.infilter,
+      meeting:task.meeting
     }
     this.get_tasks=this.get_tasks.bind(this)
   }
 
   get_tasks=()=>{
     axios.get('https://md-dashboard-backend.herokuapp.com//tasks',{headers:{"Authorization":"Token token="+this.state.current_user.auth_token}}).then((response)=>{
+      console.log(response)
       this.setState({
         allToDos:response.data,
         toDos:response.data
       })
+
+      this.filterByMeeting(this.props.task.meeting)
     })
+    console.log("filtering")
   }
 
 
@@ -483,6 +494,7 @@ class ToDo extends Component {
   componentDidMount() {
     this.manageHeight();
     this.get_tasks()
+    // this.filterByMeeting(this.props.task.meeting)
   }
 
   componentDidUpdate() {
@@ -608,7 +620,6 @@ class ToDo extends Component {
 
   render() {
     const {selectedToDos, loader, drawerState, currentTodo, toDos, conversation, user, alertMessage, showMessage} = this.state;
-
     return (
       <div className="gx-main-content">
         <div className="gx-app-module">
@@ -653,7 +664,7 @@ class ToDo extends Component {
                   </Dropdown>
 
                   <div class="width-90">{(this.state.infilter) &&
-                    < TaskForm meeting_id={this.state.meeting} current_user={this.state.current_user}/>
+                    <TaskForm meeting_id={this.state.meeting.key} current_user={this.state.current_user}/>
                   }</div>
 
                   {/*{*/}
@@ -688,4 +699,4 @@ class ToDo extends Component {
   }
 }
 
-export default connect(mapStateToProps)(ToDo)
+export default connect(mapStateToProps,mapDispatchToProps)(ToDo)

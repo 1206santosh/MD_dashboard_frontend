@@ -12,8 +12,8 @@ class MeetingSearch extends Component{
     super(props)
     const current_user=this.props.current_user
     this.state = {
-      data: [],
-      value: [],
+      data:  [],
+      value: this.props.selected_meeting,
       fetching: false,
       current_user:current_user,
       allMeetings:[]
@@ -50,6 +50,7 @@ class MeetingSearch extends Component{
 
 
   render(){
+    console.log(this.props.selected_meeting)
     return(
       <Select
         labelInValue
@@ -60,8 +61,9 @@ class MeetingSearch extends Component{
         onChange={this.props.handleChange}
         notFoundContent={this.state.fetching ? <Spin size="small" /> : null}
         style={{ width: '100%' }}
+        value={this.props.selected_meeting}
       >
-        {this.state.data.map(d => <Option key={d.id} >{d.description}</Option>)}
+        {this.state.data.map(d => <Option key={d.id}  value={d.id}>{d.description}</Option>)}
       </Select>
 
     )
